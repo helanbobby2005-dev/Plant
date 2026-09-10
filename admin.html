@@ -1,0 +1,837 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenLeaf | Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --primary-dark: #1b4332;
+            --primary-light: #d8f3dc;
+            --accent: #52b788;
+            --text-dark: #1f2d24;
+            --text-muted: #5b7062;
+            --bg-main: #f3f7f4;
+            --card-bg: #ffffff;
+            --border: #dbe7dd;
+            --danger: #e63946;
+            --warning: #f77f00;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-dark); min-height: 100vh; display: flex; }
+        #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(27,67,50,0.95), rgba(45,106,79,0.92)); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px); }
+        .login-box { background: white; border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; }
+        .login-box .logo-icon { font-size: 40px; color: var(--primary); margin-bottom: 12px; }
+        .login-box h2 { font-size: 22px; color: var(--primary-dark); margin-bottom: 6px; }
+        .login-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 24px; }
+        .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; margin-bottom: 14px; outline: none; }
+        .form-input:focus { border-color: var(--primary); }
+        .btn-login { width: 100%; padding: 11px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+        .btn-login:hover { background: var(--primary-dark); }
+        .sidebar { width: 250px; background: var(--primary-dark); color: white; display: flex; flex-direction: column; flex-shrink: 0; }
+        .sidebar-header { padding: 24px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header i { font-size: 24px; color: var(--accent); }
+        .sidebar-header h2 { font-size: 18px; font-weight: 700; }
+        .sidebar-menu { padding: 18px 12px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+        .sidebar-menu button { background: transparent; border: none; color: #d8f3dc; padding: 11px 16px; border-radius: 8px; text-align: left; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+        .sidebar-menu button:hover, .sidebar-menu button.active { background: rgba(255,255,255,0.12); color: white; font-weight: 600; }
+        .sidebar-menu button i { width: 18px; font-size: 15px; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 8px; }
+        .btn-storefront { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px; background: var(--accent); color: var(--primary-dark); text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .btn-logout { background: transparent; color: #ffb4a2; border: 1px solid rgba(255,255,255,0.15); padding: 8px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .main-content { flex-grow: 1; padding: 24px 32px; overflow-y: auto; max-height: 100vh; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .top-bar h1 { font-size: 22px; color: var(--primary-dark); font-weight: 700; }
+        .admin-badge { background: white; border: 1px solid var(--border); padding: 6px 14px; border-radius: 20px; font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+        .admin-badge span { color: var(--primary); font-weight: 600; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .stat-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .stat-info h3 { font-size: 11.5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+        .stat-info .stat-value { font-size: 22px; font-weight: 700; color: var(--primary-dark); }
+        .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .stat-icon.green { background: #e8f5e9; color: #2e7d32; }
+        .stat-icon.blue { background: #e3f2fd; color: #1565c0; }
+        .stat-icon.amber { background: #fff8e1; color: #f57f17; }
+        .stat-icon.purple { background: #f3e5f5; color: #7b1fa2; }
+        .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 24px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+        .card-header h2 { font-size: 16px; color: var(--primary-dark); font-weight: 600; }
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .search-bar { display: flex; gap: 10px; align-items: center; }
+        .search-bar input, .search-bar select { padding: 7px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; outline: none; }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+        th { background: #f8faf8; color: var(--text-muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border); text-transform: uppercase; font-size: 10.5px; }
+        td { padding: 12px 14px; border-bottom: 1px solid #eef3ef; vertical-align: middle; }
+        tr:hover td { background: #fafcfa; }
+        .plant-thumb { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border); }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10.5px; font-weight: 600; text-transform: capitalize; }
+        .badge-indoor { background: #e8f5e9; color: #2e7d32; }
+        .badge-outdoor { background: #e0f2f1; color: #00796b; }
+        .badge-flowering { background: #fce4ec; color: #c2185b; }
+        .badge-succulent { background: #fff3e0; color: #e65100; }
+        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+        .status-pending { background: #fff8e1; color: #f57f17; }
+        .status-confirmed { background: #e1f5fe; color: #0288d1; }
+        .status-shipped { background: #ede7f6; color: #512da8; }
+        .status-delivered { background: #e8f5e9; color: #2e7d32; }
+        .status-cancelled { background: #ffebee; color: #c62828; }
+        .action-btns { display: flex; gap: 6px; }
+        .btn-icon { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border); background: white; color: var(--text-dark); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; }
+        .btn-icon:hover { background: #e8f4e9; color: var(--primary); }
+        .btn-icon.delete:hover { background: #ffebee; color: var(--danger); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal-card { background: white; border-radius: 14px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 24px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .modal-header h3 { font-size: 16px; color: var(--primary-dark); }
+        .modal-close { background: none; border: none; font-size: 16px; color: var(--text-muted); cursor: pointer; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-group label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+        .modal-footer { margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px; }
+        .btn-cancel { padding: 8px 16px; background: #ecefe9; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .toast { position: fixed; bottom: 24px; right: 24px; background: var(--primary-dark); color: white; padding: 10px 18px; border-radius: 8px; font-size: 12px; z-index: 10001; opacity: 0; transform: translateY(20px); transition: all 0.3s ease; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+<!-- LOGIN MODAL -->
+<div id="loginOverlay">
+    <div class="login-box">
+        <div class="logo-icon"><i class="fa-solid fa-leaf"></i></div>
+        <h2>GreenLeaf Admin</h2>
+        <p>Enter your credentials to access the management portal</p>
+        <form onsubmit="handleLogin(event)">
+            <input type="text" id="loginUsername" class="form-input" placeholder="Username (Default: admin)" required>
+            <input type="password" id="loginPassword" class="form-input" placeholder="Password (Default: admin123)" required>
+            <button type="submit" class="btn-login"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+        </form>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <i class="fa-solid fa-leaf"></i>
+        <h2>GreenLeaf</h2>
+    </div>
+    <div class="sidebar-menu">
+        <button id="tab-dashboard" class="active" onclick="switchTab('dashboard')">
+            <i class="fa-solid fa-chart-line"></i> Dashboard
+        </button>
+        <button id="tab-plants" onclick="switchTab('plants')">
+            <i class="fa-solid fa-seedling"></i> Plants Catalog
+        </button>
+        <button id="tab-orders" onclick="switchTab('orders')">
+            <i class="fa-solid fa-cart-flatbed"></i> Orders
+        </button>
+        <button id="tab-contacts" onclick="switchTab('contacts')">
+            <i class="fa-solid fa-envelope-open-text"></i> Inquiries
+        </button>
+    </div>
+    <div class="sidebar-footer">
+        <a href="/" target="_blank" class="btn-storefront">
+            <i class="fa-solid fa-store"></i> View Storefront
+        </a>
+        <button onclick="handleLogout()" class="btn-logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+        </button>
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+    <div class="top-bar">
+        <h1 id="pageTitle">Admin Dashboard</h1>
+        <div class="admin-badge">
+            <i class="fa-solid fa-circle-user"></i>
+            Logged in as: <span id="adminNameDisplay">admin</span>
+        </div>
+    </div>
+
+    <!-- 1. DASHBOARD TAB -->
+    <div id="view-dashboard">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Plants</h3>
+                    <div class="stat-value" id="statPlants">0</div>
+                </div>
+                <div class="stat-icon green"><i class="fa-solid fa-plant-wilt"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Orders</h3>
+                    <div class="stat-value" id="statOrders">0</div>
+                </div>
+                <div class="stat-icon blue"><i class="fa-solid fa-bag-shopping"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Revenue</h3>
+                    <div class="stat-value" id="statRevenue">₹0</div>
+                </div>
+                <div class="stat-icon amber"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Pending Orders</h3>
+                    <div class="stat-value" id="statPending">0</div>
+                </div>
+                <div class="stat-icon purple"><i class="fa-solid fa-clock"></i></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Recent Orders</h2>
+                <button class="btn-primary" onclick="switchTab('orders')">View All Orders</button>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentOrdersTable">
+                        <tr><td colspan="6" style="text-align:center;">Loading orders...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. PLANTS MANAGEMENT TAB -->
+    <div id="view-plants" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h2>Manage Plants Catalog</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="search-bar">
+                        <input type="text" id="plantSearchInput" placeholder="Search plant..." oninput="filterPlantsTable()">
+                        <select id="plantCategorySelect" onchange="filterPlantsTable()">
+                            <option value="all">All Categories</option>
+                            <option value="indoor">Indoor</option>
+                            <option value="outdoor">Outdoor</option>
+                            <option value="flowering">Flowering</option>
+                            <option value="succulent">Succulent</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" onclick="openPlantModal()"><i class="fa-solid fa-plus"></i> Add New Plant</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Plant Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Discount</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="plantsTableBody">
+                        <tr><td colspan="7" style="text-align:center;">Loading plants...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ORDERS TAB -->
+    <div id="view-orders" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h2>Customer Orders</h2>
+                <div class="search-bar">
+                    <input type="text" id="orderSearchInput" placeholder="Search customer/order..." oninput="filterOrdersTable()">
+                    <select id="orderStatusFilter" onchange="filterOrdersTable()">
+                        <option value="all">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Items & Total</th>
+                            <th>Payment</th>
+                            <th>Status Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <tr><td colspan="7" style="text-align:center;">Loading orders...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. CONTACT INQUIRIES TAB -->
+    <div id="view-contacts" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h2>Customer Inquiries & Messages</h2>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactsTableBody">
+                        <tr><td colspan="6" style="text-align:center;">Loading messages...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- PLANT MODAL (ADD / EDIT) -->
+<div class="modal-overlay" id="plantModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 id="modalTitle">Add New Plant</h3>
+            <button class="modal-close" onclick="closePlantModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="plantForm" onsubmit="savePlant(event)">
+            <input type="hidden" id="plantFormId">
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label>Plant Name</label>
+                    <input type="text" id="pName" class="form-input" placeholder="e.g. Fiddle Leaf Fig" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="pCategory" class="form-input" required>
+                        <option value="indoor">Indoor</option>
+                        <option value="outdoor">Outdoor</option>
+                        <option value="flowering">Flowering</option>
+                        <option value="succulent">Succulent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Plant Type</label>
+                    <input type="text" id="pType" class="form-input" placeholder="e.g. Tropical / Foliage" required>
+                </div>
+                <div class="form-group">
+                    <label>Selling Price (₹)</label>
+                    <input type="number" id="pPrice" class="form-input" placeholder="399" required min="1">
+                </div>
+                <div class="form-group">
+                    <label>Old Price (₹)</label>
+                    <input type="number" id="pOldPrice" class="form-input" placeholder="499" required min="1">
+                </div>
+                <div class="form-group">
+                    <label>Discount (%)</label>
+                    <input type="number" id="pDiscount" class="form-input" placeholder="20" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label>Initial Rating (1-5)</label>
+                    <input type="number" step="0.1" id="pRating" class="form-input" value="4.8" min="1" max="5">
+                </div>
+                <div class="form-group">
+                    <label>Light Requirement</label>
+                    <input type="text" id="pLight" class="form-input" placeholder="e.g. Low to Bright / Indirect" required>
+                </div>
+                <div class="form-group">
+                    <label>Water Requirement</label>
+                    <input type="text" id="pWater" class="form-input" placeholder="e.g. Low / Medium / High" required>
+                </div>
+                <div class="form-group">
+                    <label>Suitable For</label>
+                    <input type="text" id="pSuitable" class="form-input" placeholder="e.g. Living Room & Office" required>
+                </div>
+                <div class="form-group">
+                    <label>Reviews Count</label>
+                    <input type="number" id="pReviews" class="form-input" value="50" min="0">
+                </div>
+                <div class="form-group full">
+                    <label>Image URL</label>
+                    <input type="url" id="pImage" class="form-input" placeholder="https://images.unsplash.com/..." required oninput="previewImage(this.value)">
+                    <img id="imagePreview" src="" alt="Preview" style="display:none; max-height:100px; border-radius:6px; margin-top:4px; object-fit:cover;">
+                </div>
+                <div class="form-group full">
+                    <label>Description</label>
+                    <textarea id="pDescription" class="form-input" style="min-height:70px;" placeholder="Brief description of the plant..." required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closePlantModal()">Cancel</button>
+                <button type="submit" class="btn-primary">Save Plant</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+    let authToken = localStorage.getItem("greenleaf_admin_token") || "";
+    let cachedPlants = [];
+    let cachedOrders = [];
+    let cachedContacts = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (authToken) {
+            checkAuthSession();
+        } else {
+            showLogin();
+        }
+    });
+
+    function showLogin() { document.getElementById("loginOverlay").style.display = "flex"; }
+    function hideLogin() { document.getElementById("loginOverlay").style.display = "none"; }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const username = document.getElementById("loginUsername").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        try {
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                authToken = data.token;
+                localStorage.setItem("greenleaf_admin_token", authToken);
+                localStorage.setItem("greenleaf_admin_name", data.username || "admin");
+                document.getElementById("adminNameDisplay").innerText = data.username || "admin";
+                hideLogin();
+                showToast("Logged in successfully! Welcome to GreenLeaf Admin.");
+                loadAllData();
+            } else {
+                alert(data.error || "Invalid username or password");
+            }
+        } catch (err) {
+            alert("Could not connect to backend server. Ensure app.py is running!");
+        }
+    }
+
+    async function checkAuthSession() {
+        try {
+            const res = await fetch("/api/auth/check", {
+                headers: { "Authorization": "Bearer " + authToken }
+            });
+            if (res.ok) {
+                hideLogin();
+                const name = localStorage.getItem("greenleaf_admin_name") || "admin";
+                document.getElementById("adminNameDisplay").innerText = name;
+                loadAllData();
+            } else {
+                showLogin();
+            }
+        } catch (err) {
+            showLogin();
+        }
+    }
+
+    function handleLogout() {
+        authToken = "";
+        localStorage.removeItem("greenleaf_admin_token");
+        localStorage.removeItem("greenleaf_admin_name");
+        showLogin();
+        showToast("Logged out successfully.");
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll(".sidebar-menu button").forEach(b => b.classList.remove("active"));
+        document.getElementById("tab-" + tabId)?.classList.add("active");
+
+        document.getElementById("view-dashboard").style.display = tabId === "dashboard" ? "block" : "none";
+        document.getElementById("view-plants").style.display = tabId === "plants" ? "block" : "none";
+        document.getElementById("view-orders").style.display = tabId === "orders" ? "block" : "none";
+        document.getElementById("view-contacts").style.display = tabId === "contacts" ? "block" : "none";
+
+        const titles = {
+            dashboard: "Dashboard Overview",
+            plants: "Plants Management",
+            orders: "Orders Management",
+            contacts: "Customer Inquiries"
+        };
+        document.getElementById("pageTitle").innerText = titles[tabId] || "Admin";
+
+        if (tabId === "plants") loadPlants();
+        if (tabId === "orders") loadOrders();
+        if (tabId === "contacts") loadContacts();
+        if (tabId === "dashboard") loadDashboardStats();
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById("toast");
+        toast.innerText = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    async function loadAllData() {
+        await Promise.all([
+            loadDashboardStats(),
+            loadPlants(),
+            loadOrders(),
+            loadContacts()
+        ]);
+    }
+
+    async function loadDashboardStats() {
+        try {
+            const res = await fetch("/api/dashboard/stats", {
+                headers: { "Authorization": "Bearer " + authToken }
+            });
+            if (res.ok) {
+                const stats = await res.json();
+                document.getElementById("statPlants").innerText = stats.total_plants;
+                document.getElementById("statOrders").innerText = stats.total_orders;
+                document.getElementById("statRevenue").innerText = "₹" + stats.total_revenue;
+                document.getElementById("statPending").innerText = stats.pending_orders;
+            }
+        } catch (e) {}
+    }
+
+    async function loadPlants() {
+        try {
+            const res = await fetch("/api/plants");
+            if (res.ok) {
+                cachedPlants = await res.json();
+                renderPlantsTable(cachedPlants);
+            }
+        } catch (e) {}
+    }
+
+    function renderPlantsTable(list) {
+        const tbody = document.getElementById("plantsTableBody");
+        if (!tbody) return;
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888;">No plants found.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = list.map(p => `
+            <tr>
+                <td><img src="${p.image}" class="plant-thumb" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1470058869958-2a77ade41c02?auto=format&fit=crop&w=100&q=80'"></td>
+                <td><strong>${p.name}</strong><br><small style="color:#666;">${p.type || p.category}</small></td>
+                <td><span class="badge badge-${p.category}">${p.category}</span></td>
+                <td><strong>₹${p.price}</strong> <span style="text-decoration:line-through; font-size:11px; color:#888;">₹${p.oldPrice}</span></td>
+                <td><span style="color:#2d6a4f; font-weight:600;">${p.discount}% OFF</span></td>
+                <td>⭐ ${p.rating} (${p.reviews})</td>
+                <td>
+                    <div class="action-btns">
+                        <button class="btn-icon" onclick="editPlant(${p.id})" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon delete" onclick="deletePlant(${p.id}, '${p.name}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </td>
+            </tr>
+        `).join("");
+    }
+
+    function filterPlantsTable() {
+        const q = document.getElementById("plantSearchInput")?.value.toLowerCase().trim() || "";
+        const cat = document.getElementById("plantCategorySelect")?.value || "all";
+
+        const filtered = cachedPlants.filter(p => {
+            const matchName = p.name.toLowerCase().includes(q) || (p.type && p.type.toLowerCase().includes(q));
+            const matchCat = cat === "all" || p.category === cat;
+            return matchName && matchCat;
+        });
+
+        renderPlantsTable(filtered);
+    }
+
+    function openPlantModal(plant = null) {
+        document.getElementById("plantForm").reset();
+        document.getElementById("imagePreview").style.display = "none";
+
+        if (plant) {
+            document.getElementById("modalTitle").innerText = "Edit Plant";
+            document.getElementById("plantFormId").value = plant.id;
+            document.getElementById("pName").value = plant.name;
+            document.getElementById("pCategory").value = plant.category;
+            document.getElementById("pType").value = plant.type || "";
+            document.getElementById("pPrice").value = plant.price;
+            document.getElementById("pOldPrice").value = plant.oldPrice;
+            document.getElementById("pDiscount").value = plant.discount;
+            document.getElementById("pRating").value = plant.rating;
+            document.getElementById("pLight").value = plant.light || "";
+            document.getElementById("pWater").value = plant.water || "";
+            document.getElementById("pSuitable").value = plant.suitable || "";
+            document.getElementById("pReviews").value = plant.reviews || 50;
+            document.getElementById("pImage").value = plant.image;
+            document.getElementById("pDescription").value = plant.description || "";
+            previewImage(plant.image);
+        } else {
+            document.getElementById("modalTitle").innerText = "Add New Plant";
+            document.getElementById("plantFormId").value = "";
+        }
+
+        document.getElementById("plantModal").classList.add("active");
+    }
+
+    function closePlantModal() { document.getElementById("plantModal").classList.remove("active"); }
+
+    function previewImage(url) {
+        const preview = document.getElementById("imagePreview");
+        if (url && url.startsWith("http")) {
+            preview.src = url;
+            preview.style.display = "block";
+        } else {
+            preview.style.display = "none";
+        }
+    }
+
+    function editPlant(id) {
+        const plant = cachedPlants.find(p => p.id === id);
+        if (plant) openPlantModal(plant);
+    }
+
+    async function deletePlant(id, name) {
+        if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
+        try {
+            const res = await fetch(`/api/plants/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": "Bearer " + authToken }
+            });
+            if (res.ok) {
+                showToast(`Plant "${name}" deleted.`);
+                loadPlants();
+                loadDashboardStats();
+            } else {
+                alert("Failed to delete plant");
+            }
+        } catch (e) {
+            alert("Error deleting plant");
+        }
+    }
+
+    async function savePlant(e) {
+        e.preventDefault();
+        const id = document.getElementById("plantFormId").value;
+        const plantData = {
+            name: document.getElementById("pName").value.trim(),
+            category: document.getElementById("pCategory").value,
+            type: document.getElementById("pType").value.trim(),
+            price: parseFloat(document.getElementById("pPrice").value),
+            oldPrice: parseFloat(document.getElementById("pOldPrice").value),
+            discount: parseInt(document.getElementById("pDiscount").value) || 0,
+            rating: parseFloat(document.getElementById("pRating").value) || 4.8,
+            reviews: parseInt(document.getElementById("pReviews").value) || 50,
+            light: document.getElementById("pLight").value.trim(),
+            water: document.getElementById("pWater").value.trim(),
+            suitable: document.getElementById("pSuitable").value.trim(),
+            image: document.getElementById("pImage").value.trim(),
+            description: document.getElementById("pDescription").value.trim()
+        };
+
+        const url = id ? `/api/plants/${id}` : `/api/plants`;
+        const method = id ? "PUT" : "POST";
+
+        try {
+            const res = await fetch(url, {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + authToken
+                },
+                body: JSON.stringify(plantData)
+            });
+
+            if (res.ok) {
+                closePlantModal();
+                showToast(id ? "Plant updated successfully!" : "Plant added to catalog!");
+                loadPlants();
+                loadDashboardStats();
+            } else {
+                alert("Failed to save plant");
+            }
+        } catch (err) {
+            alert("Error communicating with server");
+        }
+    }
+
+    async function loadOrders() {
+        try {
+            const res = await fetch("/api/orders", {
+                headers: { "Authorization": "Bearer " + authToken }
+            });
+            if (res.ok) {
+                cachedOrders = await res.json();
+                renderOrdersTable(cachedOrders);
+                renderRecentOrdersTable(cachedOrders.slice(0, 5));
+            }
+        } catch (e) {}
+    }
+
+    function renderOrdersTable(list) {
+        const tbody = document.getElementById("ordersTableBody");
+        if (!tbody) return;
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888;">No orders placed yet.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = list.map(o => `
+            <tr>
+                <td><strong>#${o.order_number}</strong></td>
+                <td><small style="color:#666;">${o.created_at || "Recent"}</small></td>
+                <td>
+                    <strong>${o.customer_name}</strong><br>
+                    <small style="color:#777;">${o.customer_address}, ${o.customer_city || ""}</small>
+                </td>
+                <td>${o.customer_phone || "-"}</td>
+                <td>
+                    <strong>₹${o.total_amount}</strong><br>
+                    <small style="color:#555;">${(o.items || []).length} items (${(o.items || []).map(i => i.name).join(", ").slice(0, 30)}...)</small>
+                </td>
+                <td><span class="badge badge-indoor">${o.payment_method}</span></td>
+                <td>
+                    <select onchange="updateOrderStatus(${o.id}, this.value)" class="form-input" style="padding:4px 8px; font-size:11px; margin-bottom:0; width:auto;">
+                        <option value="Pending" ${o.status === "Pending" ? "selected" : ""}>Pending</option>
+                        <option value="Confirmed" ${o.status === "Confirmed" ? "selected" : ""}>Confirmed</option>
+                        <option value="Shipped" ${o.status === "Shipped" ? "selected" : ""}>Shipped</option>
+                        <option value="Delivered" ${o.status === "Delivered" ? "selected" : ""}>Delivered</option>
+                        <option value="Cancelled" ${o.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+                    </select>
+                </td>
+            </tr>
+        `).join("");
+    }
+
+    function renderRecentOrdersTable(list) {
+        const tbody = document.getElementById("recentOrdersTable");
+        if (!tbody) return;
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888;">No recent orders.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = list.map(o => `
+            <tr>
+                <td><strong>#${o.order_number}</strong></td>
+                <td>${o.customer_name}</td>
+                <td>${(o.items || []).length} items</td>
+                <td><strong>₹${o.total_amount}</strong></td>
+                <td>${o.payment_method}</td>
+                <td><span class="status-badge status-${(o.status || 'pending').toLowerCase()}">${o.status}</span></td>
+            </tr>
+        `).join("");
+    }
+
+    function filterOrdersTable() {
+        const q = document.getElementById("orderSearchInput")?.value.toLowerCase().trim() || "";
+        const status = document.getElementById("orderStatusFilter")?.value || "all";
+
+        const filtered = cachedOrders.filter(o => {
+            const matchQuery = o.order_number.toLowerCase().includes(q) ||
+                               o.customer_name.toLowerCase().includes(q) ||
+                               (o.customer_phone && o.customer_phone.includes(q));
+            const matchStatus = status === "all" || o.status === status;
+            return matchQuery && matchStatus;
+        });
+
+        renderOrdersTable(filtered);
+    }
+
+    async function updateOrderStatus(orderId, newStatus) {
+        try {
+            const res = await fetch(`/api/orders/${orderId}/status`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + authToken
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            if (res.ok) {
+                showToast(`Order status updated to ${newStatus}`);
+                loadDashboardStats();
+            } else {
+                alert("Failed to update status");
+            }
+        } catch (e) {
+            alert("Error updating order");
+        }
+    }
+
+    async function loadContacts() {
+        try {
+            const res = await fetch("/api/contacts", {
+                headers: { "Authorization": "Bearer " + authToken }
+            });
+            if (res.ok) {
+                cachedContacts = await res.json();
+                renderContactsTable(cachedContacts);
+            }
+        } catch (e) {}
+    }
+
+    function renderContactsTable(list) {
+        const tbody = document.getElementById("contactsTableBody");
+        if (!tbody) return;
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888;">No inquiries yet.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = list.map(c => `
+            <tr>
+                <td><small style="color:#777;">${c.created_at || "Recent"}</small></td>
+                <td><strong>${c.name}</strong></td>
+                <td><a href="mailto:${c.email}" style="color:#2d6a4f;">${c.email}</a></td>
+                <td><strong>${c.subject || "-"}</strong></td>
+                <td style="max-width:300px; color:#444;">${c.message}</td>
+                <td>
+                    <button class="btn-icon delete" onclick="deleteContact(${c.id})" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        `).join("");
+    }
+
+    async function deleteContact(id) {
+        if (!confirm("Delete this message?")) return;
+        try {
+            const res = await fetch(`/api/contacts/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": "Bearer " + authToken }
+            });
+            if (res.ok) {
+                showToast("Message deleted");
+                loadContacts();
+            }
+        } catch (e) {}
+    }
+</script>
+</body>
+</html>

@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
   "name": "greenleaf-backend",
   "version": "1.0.0",
   "description": "GreenLeaf Plant Store Backend and Admin Portal",
+=======
+  "name": "plants-backend",
+  "version": "1.0.0",
+  "description": "Plants Store Backend and Admin Portal",
+>>>>>>> b3dbb1de691565d39ee7a93a53eea8f90e79e231
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -10,4 +16,8 @@
     "cors": "^2.8.5",
     "express": "^4.19.2"
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> b3dbb1de691565d39ee7a93a53eea8f90e79e231

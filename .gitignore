@@ -1,0 +1,7 @@
+﻿node_modules/
+__pycache__/
+*.pyc
+store.json
+.env
+.DS_Store
+greenleaf.db
