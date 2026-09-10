@@ -3370,40 +3370,6 @@ footer{
      JAVASCRIPT LOGIC
 ========================================================= -->
 <script>
-
-// 1. Automatically fetch data from backend when loaded
-async function syncWithBackend(){
-    try {
-        const res = await fetch("/api/plants");
-        if(res.ok){
-            const serverPlants = await res.json();
-            if(Array.isArray(serverPlants) && serverPlants.length > 0){
-                plants = serverPlants;
-            }
-            backendAvailable = true;
-            console.log("Connected to GreenLeaf backend API");
-        }
-    } catch(e) {
-        console.log("Running in client / offline mode");
-    }
-    renderStoreData();
-}
-
-// 2. Automatically sync every cart, plant, or order update to backend
-function saveData(){
-    localStorage.setItem("greenleafPlants", JSON.stringify(plants));
-    localStorage.setItem("greenleafWishlist", JSON.stringify(wishlist));
-    localStorage.setItem("greenleafCart", JSON.stringify(cart));
-    localStorage.setItem("greenleafOrders", JSON.stringify(orders));
-    localStorage.setItem("greenleafMessages", JSON.stringify(messages));
-    
-    // If backend is running, sync to server.js
-    if(backendAvailable){
-        fetch("/api/plants", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(plants) }).catch(()=>{});
-        fetch("/api/orders", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(orders) }).catch(()=>{});
-        fetch("/api/messages", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(messages) }).catch(()=>{});
-    }
-}
 /* =========================================================
    INITIAL DATASET
 ========================================================= */
@@ -3797,6 +3763,39 @@ const initialPlants = [
 /* =========================================================
    STATE MANAGEMENT & STORAGE
 ========================================================= */
+// 1. Automatically fetch data from backend when loaded
+async function syncWithBackend(){
+    try {
+        const res = await fetch("/api/plants");
+        if(res.ok){
+            const serverPlants = await res.json();
+            if(Array.isArray(serverPlants) && serverPlants.length > 0){
+                plants = serverPlants;
+            }
+            backendAvailable = true;
+            console.log("Connected to GreenLeaf backend API");
+        }
+    } catch(e) {
+        console.log("Running in client / offline mode");
+    }
+    renderStoreData();
+}
+
+// 2. Automatically sync every cart, plant, or order update to backend
+function saveData(){
+    localStorage.setItem("greenleafPlants", JSON.stringify(plants));
+    localStorage.setItem("greenleafWishlist", JSON.stringify(wishlist));
+    localStorage.setItem("greenleafCart", JSON.stringify(cart));
+    localStorage.setItem("greenleafOrders", JSON.stringify(orders));
+    localStorage.setItem("greenleafMessages", JSON.stringify(messages));
+    
+    // If backend is running, sync to server.js
+    if(backendAvailable){
+        fetch("/api/plants", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(plants) }).catch(()=>{});
+        fetch("/api/orders", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(orders) }).catch(()=>{});
+        fetch("/api/messages", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(messages) }).catch(()=>{});
+    }
+}
 let plants = JSON.parse(localStorage.getItem("greenleafPlants"));
 if(!plants || !Array.isArray(plants) || plants.length === 0){
     plants = [...initialPlants];
