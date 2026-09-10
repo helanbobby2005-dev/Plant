@@ -1,0 +1,5001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GreenLeaf - Online plant shopping store with Professional Admin Management & AI Assistant">
+<title>GreenLeaf | Plant Store & AI Assistant</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+/* =========================================================
+   RESET & BASE STYLES
+========================================================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Poppins",sans-serif;
+    background:#f5f8f5;
+    color:#263b2b;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    -webkit-font-smoothing:antialiased;
+}
+
+button,
+input,
+select,
+textarea{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+    border:none;
+    outline:none;
+    transition:all .2s ease;
+}
+
+img{
+    max-width:100%;
+    display:block;
+}
+
+/* =========================================================
+   NAVBAR & HEADER
+========================================================= */
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    height:64px;
+    width:100%;
+    background:rgba(255,255,255,.98);
+    border-bottom:1px solid #dce8de;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 5%;
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+}
+
+.logo{
+    border:none;
+    background:none;
+    color:#245d34;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:20px;
+    font-weight:700;
+    padding:4px 0;
+    cursor:pointer;
+}
+
+.logo i{
+    color:#439a54;
+    font-size:22px;
+}
+
+.nav-links{
+    display:flex;
+    gap:4px;
+    align-items:center;
+}
+
+.nav-links button{
+    border:none;
+    background:transparent;
+    color:#55685a;
+    font-weight:500;
+    font-size:12.5px;
+    padding:6px 12px;
+    border-radius:6px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    width:fit-content;
+}
+
+.nav-links button:hover,
+.nav-links button.active{
+    background:#ebf5ec;
+    color:#286338;
+    font-weight:600;
+}
+
+.nav-icons{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+.icon-btn{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    border:1px solid #dce7dd;
+    background:#f7faf7;
+    color:#356e43;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.icon-btn:hover{
+    background:#e8f4e9;
+    border-color:#a8d5af;
+    transform:scale(1.05);
+}
+
+.admin-nav-btn{
+    background:#eef7ef;
+    color:#256133;
+    border:1px solid #c2e2c8;
+    padding:6px 13px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+    transition:all .2s ease;
+}
+
+.admin-nav-btn:hover{
+    background:#3e884d;
+    color:white;
+    border-color:#3e884d;
+}
+
+.admin-nav-btn.logged-in{
+    background:#204c2b;
+    color:white;
+    border-color:#204c2b;
+    box-shadow:0 2px 8px rgba(32,76,43,0.3);
+}
+
+.count{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#dc3545;
+    color:white;
+    font-size:9.5px;
+    font-weight:700;
+    min-width:16px;
+    height:16px;
+    line-height:16px;
+    padding:0 3px;
+    border-radius:10px;
+    text-align:center;
+}
+
+/* =========================================================
+   PAGE CONTAINER & LAYOUT
+========================================================= */
+.page{
+    display:none;
+    padding-bottom:50px;
+    animation:fadeIn .25s ease-in-out;
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(4px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.page-container{
+    width:90%;
+    max-width:1250px;
+    margin:auto;
+    padding-top:22px;
+}
+
+/* =========================================================
+   HERO SECTION & BUTTONS
+========================================================= */
+.hero{
+    padding:20px 5% 0;
+}
+
+.hero-image{
+    background:
+        linear-gradient(rgba(18,50,26,.72), rgba(18,50,26,.72)),
+        url("images/Monstera Deliciosa.jpg");
+    background-size:cover;
+    background-position:center;
+    border-radius:16px;
+    padding:50px 35px;
+    color:white;
+}
+
+.hero-content{
+    max-width:550px;
+}
+
+.hero-small{
+    display:inline-block;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(5px);
+    border:1px solid rgba(255,255,255,.2);
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:12px;
+    font-weight:600;
+}
+
+.hero-content h1{
+    font-size:36px;
+    line-height:1.2;
+    margin-bottom:12px;
+    font-weight:700;
+}
+
+.hero-content h1 span{
+    color:#a8e6b1;
+    display:block;
+}
+
+.hero-content p{
+    font-size:12.5px;
+    line-height:1.6;
+    color:#e1f0e3;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.primary-btn,
+.secondary-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:8px 15px;
+    font-size:12px;
+    font-weight:600;
+    border-radius:6px;
+    width:fit-content;
+    cursor:pointer;
+}
+
+.primary-btn{
+    background:#3e884d;
+    color:white;
+}
+
+.primary-btn:hover{
+    background:#2f6e3c;
+    transform:translateY(-1px);
+}
+
+.secondary-btn{
+    background:rgba(255,255,255,.9);
+    color:#275b34;
+    border:1px solid #cbe0ce;
+}
+
+.secondary-btn:hover{
+    background:white;
+    border-color:#9dc7a3;
+    transform:translateY(-1px);
+}
+
+/* =========================================================
+   EXPLORE BAR & HEADINGS
+========================================================= */
+.explore-bar{
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:12px;
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    gap:14px;
+}
+
+.explore-bar h2{
+    color:#255431;
+    font-size:17px;
+}
+
+.explore-bar p{
+    color:#6b7c70;
+    font-size:11px;
+    margin-top:2px;
+}
+
+.explore-button{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border:none;
+    background:#3e884d;
+    color:white;
+    padding:6px 13px;
+    border-radius:6px;
+    font-size:11.5px;
+    font-weight:600;
+    width:fit-content;
+    white-space:nowrap;
+    cursor:pointer;
+}
+
+.explore-button:hover{
+    background:#2f6e3c;
+}
+
+.section-heading{
+    margin-bottom:14px;
+}
+
+.section-heading h2{
+    color:#245330;
+    font-size:17px;
+}
+
+.section-heading p{
+    color:#6f8074;
+    font-size:11px;
+}
+
+/* =========================================================
+   PLANT GRID & PRODUCT CARDS
+========================================================= */
+.plant-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:16px;
+}
+
+.plant-card{
+    background:white;
+    border:1px solid #e1ebe2;
+    border-radius:12px;
+    overflow:hidden;
+    transition:transform .2s, box-shadow .2s;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+}
+
+.plant-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(42,88,52,.08);
+    border-color:#b8dcbd;
+}
+
+.plant-image-wrap{
+    position:relative;
+    width:100%;
+    height:190px;
+    background:#f0f5f1;
+    overflow:hidden;
+}
+
+.plant-image-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .3s ease;
+}
+
+.plant-card:hover .plant-image-wrap img{
+    transform:scale(1.04);
+}
+
+.discount-badge{
+    position:absolute;
+    top:9px;
+    left:9px;
+    background:#e94a55;
+    color:white;
+    font-size:9.5px;
+    font-weight:700;
+    padding:3px 7px;
+    border-radius:4px;
+    z-index:2;
+}
+
+.heart-button{
+    position:absolute;
+    top:9px;
+    right:9px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:rgba(255,255,255,.92);
+    border:1px solid #dce8de;
+    color:#708876;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    z-index:3;
+    cursor:pointer;
+}
+
+.heart-button:hover{
+    background:white;
+    transform:scale(1.08);
+}
+
+.heart-button.liked{
+    color:#dc3545;
+    border-color:#f5c2c7;
+    background:white;
+}
+
+.product-actions{
+    position:absolute;
+    left:8px;
+    right:8px;
+    bottom:8px;
+    display:flex;
+    gap:6px;
+    opacity:0;
+    transform:translateY(6px);
+    transition:.2s;
+    z-index:2;
+}
+
+.plant-card:hover .product-actions{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.product-actions button{
+    flex:1;
+    border:none;
+    padding:6px 6px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+}
+
+.product-view{
+    background:white;
+    color:#286338;
+    border:1px solid #d4e5d6 !important;
+}
+
+.product-view:hover{
+    background:#eef6ef;
+}
+
+.product-cart{
+    background:#3e884d;
+    color:white;
+}
+
+.product-cart:hover{
+    background:#2f6e3c;
+}
+
+.plant-info{
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    flex-grow:1;
+}
+
+.plant-category{
+    color:#5c9465;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    font-size:9.5px;
+    font-weight:700;
+}
+
+.plant-info h3{
+    color:#244d2d;
+    font-size:14px;
+    font-weight:600;
+    margin:3px 0;
+}
+
+.rating{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    margin:3px 0 6px;
+    font-size:11px;
+}
+
+.rating-stars{
+    color:#f59e0b;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+.rating-number{
+    color:#6f8074;
+    font-size:10.5px;
+}
+
+.plant-description{
+    color:#67776b;
+    font-size:11.5px;
+    line-height:1.45;
+    height:34px;
+    overflow:hidden;
+    margin-bottom:10px;
+}
+
+.plant-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:auto;
+    padding-top:6px;
+}
+
+.price{
+    color:#2c743a;
+    font-size:15px;
+    font-weight:700;
+}
+
+.old-price{
+    color:#97a59a;
+    font-size:11px;
+    text-decoration:line-through;
+    margin-left:4px;
+}
+
+.view-btn{
+    border:none;
+    background:#eaf5eb;
+    color:#2c6d39;
+    padding:5px 11px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    width:fit-content;
+    cursor:pointer;
+}
+
+.view-btn:hover{
+    background:#d9ecd9;
+}
+
+/* =========================================================
+   SEARCH & FILTER CONTROLS
+========================================================= */
+.plants-top{
+    display:flex;
+    justify-content:center;
+    margin-bottom:18px;
+}
+
+.search-box{
+    width:100%;
+    max-width:460px;
+    position:relative;
+}
+
+.search-box i{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#6c8a73;
+    font-size:13px;
+}
+
+.search-box input{
+    width:100%;
+    height:36px;
+    border:1px solid #d4e4d6;
+    border-radius:7px;
+    background:white;
+    outline:none;
+    padding:0 14px 0 34px;
+    font-size:12px;
+    color:#304434;
+}
+
+.search-box input:focus{
+    border-color:#4a9e5b;
+}
+
+.plants-layout{
+    display:grid;
+    grid-template-columns:190px 1fr;
+    gap:18px;
+    align-items:start;
+}
+
+.filter-panel{
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:12px;
+    padding:14px;
+    position:sticky;
+    top:75px;
+}
+
+.filter-panel h3{
+    color:#295934;
+    font-size:13px;
+    margin-bottom:11px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.filter-group{
+    margin-bottom:13px;
+}
+
+.filter-group h4{
+    color:#4a6851;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    margin-bottom:6px;
+}
+
+.filter-option{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:6px;
+    color:#5c7061;
+    font-size:11px;
+    cursor:pointer;
+}
+
+.filter-option input{
+    accent-color:#3e884d;
+}
+
+.price-select{
+    width:100%;
+    height:30px;
+    border:1px solid #d6e3d8;
+    border-radius:6px;
+    background:white;
+    padding:0 7px;
+    font-size:11px;
+    color:#4a5e4f;
+    outline:none;
+}
+
+.clear-filter{
+    width:fit-content;
+    border:none;
+    background:#edf6ee;
+    color:#2f6e3c;
+    padding:6px 12px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    margin-top:2px;
+}
+
+.clear-filter:hover{
+    background:#dceedd;
+}
+
+/* =========================================================
+   PRODUCT DETAILS
+========================================================= */
+.details-wrapper{
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:16px;
+    padding:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    align-items:center;
+    max-width:960px;
+    margin:0 auto;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:75px 1fr;
+    gap:12px;
+    align-items:start;
+}
+
+.thumbnails{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.thumbnail{
+    width:75px;
+    height:75px;
+    border-radius:7px;
+    object-fit:cover;
+    border:2px solid #e1ede2;
+    cursor:pointer;
+    transition:.2s;
+    background:#edf5ed;
+}
+
+.thumbnail:hover{
+    border-color:#7bb885;
+}
+
+.thumbnail.active{
+    border-color:#3e884d;
+    box-shadow:0 2px 8px rgba(62,136,77,.25);
+}
+
+.main-image{
+    width:100%;
+    height:400px;
+    object-fit:cover;
+    border-radius:11px;
+    background:#edf5ed;
+    border:1px solid #dfe9e0;
+}
+
+.details-content{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.details-category{
+    color:#4a8e56;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:700;
+    margin-bottom:1px;
+}
+
+.details-content h1{
+    color:#204f29;
+    font-size:24px;
+    font-weight:700;
+    margin:1px 0 5px;
+    line-height:1.2;
+}
+
+.details-rating{
+    display:inline-flex;
+    gap:6px;
+    align-items:center;
+    margin:1px 0 6px;
+    font-size:11.5px;
+    color:#617466;
+    width:fit-content;
+}
+
+.details-rating .stars{
+    color:#f59e0b;
+    letter-spacing:1px;
+}
+
+.details-price-wrap{
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+    width:fit-content;
+}
+
+.details-price{
+    color:#2e753c;
+    font-size:20px;
+    font-weight:700;
+}
+
+.details-old-price{
+    color:#909e93;
+    text-decoration:line-through;
+    font-size:12px;
+}
+
+.details-discount{
+    display:inline-block;
+    background:#e6f5e8;
+    color:#287037;
+    font-size:10px;
+    font-weight:700;
+    padding:2px 7px;
+    border-radius:4px;
+    margin:4px 0 8px;
+    width:fit-content;
+}
+
+.details-description{
+    color:#4c5f51;
+    font-size:12.5px;
+    line-height:1.5;
+    margin-bottom:12px;
+}
+
+.details-info{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-bottom:14px;
+}
+
+.info-box{
+    width:fit-content;
+    background:#f2f7f3;
+    border:1px solid #e1ebe2;
+    padding:5px 9px;
+    border-radius:6px;
+    display:inline-flex;
+    flex-direction:column;
+}
+
+.info-box small{
+    display:block;
+    color:#708474;
+    font-size:8.5px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+    margin-bottom:1px;
+}
+
+.info-box strong{
+    color:#254e2d;
+    font-size:11.5px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.details-actions{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+.details-actions button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    padding:6px 12px;
+    font-size:11.5px;
+    font-weight:600;
+    border-radius:5px;
+    width:fit-content;
+    border:none;
+}
+
+/* =========================================================
+   WISHLIST & CART
+========================================================= */
+.wishlist-layout{
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:14px;
+    padding:16px;
+}
+
+.wishlist-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+
+.wishlist-header h2{
+    color:#285632;
+    font-size:17px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.wishlist-header p{
+    color:#6f7f73;
+    font-size:11px;
+}
+
+.cart-page-layout{
+    display:grid;
+    grid-template-columns:1fr 300px;
+    gap:16px;
+    align-items:start;
+}
+
+.cart-items-box{
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:14px;
+    padding:14px;
+}
+
+.cart-page-card{
+    display:grid;
+    grid-template-columns:80px 1fr auto;
+    gap:12px;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #edf1ed;
+}
+
+.cart-page-card:last-child{
+    border-bottom:none;
+}
+
+.cart-page-card img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:7px;
+}
+
+.cart-page-info h3{
+    color:#264e2d;
+    font-size:13.5px;
+    font-weight:600;
+}
+
+.cart-page-info p{
+    color:#708174;
+    font-size:9.5px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    margin:2px 0;
+}
+
+.cart-price{
+    color:#2c743a;
+    font-weight:700;
+    font-size:13px;
+}
+
+.quantity-box{
+    display:inline-flex;
+    align-items:center;
+    border:1px solid #d5e3d7;
+    border-radius:5px;
+    overflow:hidden;
+    margin-top:5px;
+}
+
+.quantity-box button{
+    width:24px;
+    height:24px;
+    border:none;
+    background:#edf6ee;
+    color:#2f6e3c;
+    font-size:12px;
+    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    cursor:pointer;
+}
+
+.quantity-box button:hover{
+    background:#dceedd;
+}
+
+.quantity-box span{
+    width:26px;
+    text-align:center;
+    font-size:10.5px;
+    font-weight:600;
+    color:#2b4731;
+}
+
+.remove-cart-page{
+    border:none;
+    background:#fdecef;
+    color:#c1454f;
+    padding:5px 9px;
+    border-radius:5px;
+    font-size:10.5px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    width:fit-content;
+    cursor:pointer;
+}
+
+.remove-cart-page:hover{
+    background:#fad8dc;
+}
+
+.cart-summary{
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:14px;
+    padding:16px;
+    position:sticky;
+    top:75px;
+}
+
+.cart-summary h2{
+    color:#264e2d;
+    font-size:15px;
+    margin-bottom:12px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    color:#607364;
+    font-size:11px;
+    margin-bottom:8px;
+}
+
+.summary-discount{
+    color:#2f793b;
+    font-weight:600;
+}
+
+.summary-line{
+    height:1px;
+    background:#e0e8e1;
+    margin:10px 0;
+}
+
+.summary-total{
+    display:flex;
+    justify-content:space-between;
+    color:#204f29;
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.checkout-btn{
+    width:fit-content;
+    border:none;
+    background:#3e884d;
+    color:white;
+    padding:7px 14px;
+    border-radius:5px;
+    font-size:11.5px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    cursor:pointer;
+}
+
+.checkout-btn:hover{
+    background:#2f6e3c;
+}
+
+.continue-btn{
+    width:fit-content;
+    border:1px solid #bdd4c0;
+    background:white;
+    color:#357442;
+    padding:6px 12px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    margin-top:6px;
+    cursor:pointer;
+}
+
+.continue-btn:hover{
+    background:#f2f8f3;
+}
+
+/* =========================================================
+   CHECKOUT PAGE & FORM
+========================================================= */
+.checkout-layout{
+    display:grid;
+    grid-template-columns:1.4fr .8fr;
+    gap:16px;
+    align-items:start;
+}
+
+.checkout-card{
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:14px;
+    padding:18px;
+}
+
+.checkout-card h2{
+    color:#264e2d;
+    font-size:16px;
+    margin-bottom:12px;
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.form-group{
+    margin-bottom:10px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    display:block;
+    color:#4a5f50;
+    font-size:10.5px;
+    font-weight:600;
+    margin-bottom:3px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    border:1px solid #d8e4da;
+    background:#fafcfa;
+    border-radius:6px;
+    outline:none;
+    padding:7px 9px;
+    color:#35493b;
+    font-size:11.5px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#4a9e5b;
+}
+
+.form-group textarea{
+    min-height:70px;
+    resize:vertical;
+}
+
+.payment-options{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:6px;
+}
+
+.payment-option{
+    border:1px solid #d9e6db;
+    border-radius:6px;
+    padding:6px 10px;
+    text-align:center;
+    color:#536757;
+    font-size:11px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    width:fit-content;
+}
+
+.payment-option input{
+    accent-color:#3e884d;
+}
+
+.payment-option:has(input:checked){
+    border-color:#3e884d;
+    background:#edf7ee;
+    color:#266132;
+    font-weight:600;
+}
+
+.place-order{
+    width:fit-content;
+    border:none;
+    background:#3e884d;
+    color:white;
+    padding:7px 15px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:12px;
+    cursor:pointer;
+}
+
+.place-order:hover{
+    background:#2f6e3c;
+}
+
+/* =========================================================
+   ABOUT US
+========================================================= */
+.about-compact-box{
+    max-width:960px;
+    margin:0 auto;
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 6px 20px rgba(45,88,51,.04);
+}
+
+.about-header-compact{
+    background:linear-gradient(120deg,#24572f,#438a4f);
+    color:white;
+    border-radius:12px;
+    padding:20px 24px;
+    margin-bottom:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+}
+
+.about-header-compact .text-left small{
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    font-size:9.5px;
+    color:#c4eecb;
+    font-weight:600;
+}
+
+.about-header-compact .text-left h1{
+    font-size:21px;
+    margin:2px 0 5px;
+    line-height:1.2;
+}
+
+.about-header-compact .text-left p{
+    font-size:11.5px;
+    color:#e9f6eb;
+    line-height:1.5;
+    max-width:560px;
+}
+
+.about-header-compact .badge-icon{
+    font-size:36px;
+    color:rgba(255,255,255,.25);
+}
+
+.about-features-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:11px;
+    margin-bottom:16px;
+}
+
+.about-feat-card{
+    background:#f7faf7;
+    border:1px solid #e3ede4;
+    border-radius:9px;
+    padding:14px 12px;
+    text-align:left;
+}
+
+.about-feat-card:hover{
+    border-color:#95c99d;
+    background:#f1f7f2;
+}
+
+.about-feat-card i{
+    color:#367d44;
+    font-size:17px;
+    margin-bottom:5px;
+}
+
+.about-feat-card h3{
+    color:#234a29;
+    font-size:12.5px;
+    margin-bottom:3px;
+    font-weight:600;
+}
+
+.about-feat-card p{
+    color:#5a6d5f;
+    font-size:10.5px;
+    line-height:1.4;
+}
+
+.about-vision-box{
+    background:#edf6ee;
+    border-left:4px solid #3e884d;
+    border-radius:6px;
+    padding:12px 16px;
+}
+
+.about-vision-box h2{
+    color:#255431;
+    font-size:13px;
+    margin-bottom:3px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.about-vision-box p{
+    color:#4e6353;
+    font-size:11px;
+    line-height:1.5;
+}
+
+/* =========================================================
+   CONTACT US
+========================================================= */
+.contact-compact-box{
+    max-width:1000px;
+    margin:0 auto;
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:16px;
+    padding:22px;
+    box-shadow:0 6px 20px rgba(45,88,51,.04);
+}
+
+.contact-layout{
+    display:grid;
+    grid-template-columns:1fr 1.3fr;
+    gap:20px;
+    align-items:stretch;
+}
+
+.contact-info-panel{
+    background:linear-gradient(135deg,#204c2b,#387a44);
+    color:white;
+    border-radius:12px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.contact-info-panel small{
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    font-size:9.5px;
+    color:#b9efbe;
+    font-weight:600;
+}
+
+.contact-info-panel h1{
+    font-size:21px;
+    margin:2px 0 5px;
+    line-height:1.2;
+}
+
+.contact-info-panel > div > p{
+    font-size:11px;
+    line-height:1.5;
+    color:#e5f4e7;
+    margin-bottom:14px;
+}
+
+.contact-items-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    margin-bottom:14px;
+}
+
+.contact-item-row{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    background:rgba(255,255,255,.1);
+    padding:7px 11px;
+    border-radius:7px;
+    border:1px solid rgba(255,255,255,.12);
+}
+
+.contact-item-row i{
+    font-size:12px;
+    color:#bbf1c1;
+    width:15px;
+    text-align:center;
+}
+
+.contact-item-row div small{
+    display:block;
+    font-size:8px;
+    text-transform:uppercase;
+    color:#c4eecb;
+    letter-spacing:.5px;
+}
+
+.contact-item-row div span{
+    font-size:10.5px;
+    font-weight:500;
+    color:white;
+}
+
+.contact-support-badge{
+    background:rgba(0,0,0,.15);
+    border-radius:6px;
+    padding:7px 11px;
+    font-size:9.5px;
+    color:#d8eedb;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.contact-support-badge i{
+    color:#a8e8b0;
+}
+
+.contact-form-panel{
+    padding:3px 5px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.contact-form-panel h2{
+    color:#255431;
+    font-size:16px;
+    margin-bottom:2px;
+}
+
+.contact-form-panel > p{
+    color:#677b6c;
+    font-size:11px;
+    margin-bottom:12px;
+}
+
+.contact-submit{
+    border:none;
+    background:#3e884d;
+    color:white;
+    padding:7px 14px;
+    border-radius:6px;
+    font-size:11.5px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    width:fit-content;
+    cursor:pointer;
+}
+
+.contact-submit:hover{
+    background:#2f6e3c;
+}
+
+/* =========================================================
+   PROFESSIONAL ADMIN DASHBOARD
+========================================================= */
+.admin-dashboard{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.admin-header{
+    background:linear-gradient(130deg, #183e21, #2d733d);
+    color:white;
+    border-radius:14px;
+    padding:22px 26px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+    box-shadow:0 6px 20px rgba(24,62,33,0.15);
+}
+
+.admin-header h1{
+    font-size:20px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.admin-header p{
+    font-size:11.5px;
+    color:#d7f3db;
+    margin-top:3px;
+}
+
+.admin-header-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.admin-stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:14px;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:12px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    box-shadow:0 4px 12px rgba(35,80,45,.03);
+}
+
+.stat-icon{
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.stat-icon.green{ background:#ebf7ed; color:#2e793d; }
+.stat-icon.blue{ background:#eaf2fb; color:#2a6ab2; }
+.stat-icon.orange{ background:#fdf3e7; color:#d97706; }
+.stat-icon.purple{ background:#f3eafa; color:#7e22ce; }
+
+.stat-info h4{
+    font-size:11px;
+    color:#6b8071;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.stat-info h2{
+    font-size:22px;
+    color:#224f2b;
+    font-weight:700;
+    margin-top:2px;
+}
+
+.admin-tabs{
+    display:flex;
+    gap:8px;
+    background:white;
+    padding:8px;
+    border-radius:10px;
+    border:1px solid #dfe9e0;
+    overflow-x:auto;
+}
+
+.admin-tab-btn{
+    padding:9px 18px;
+    border-radius:7px;
+    font-size:12px;
+    font-weight:600;
+    color:#5a6e60;
+    background:transparent;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+    cursor:pointer;
+}
+
+.admin-tab-btn:hover{
+    background:#edf6ee;
+    color:#265f34;
+}
+
+.admin-tab-btn.active{
+    background:#3e884d;
+    color:white;
+}
+
+.admin-section{
+    display:none;
+    background:white;
+    border:1px solid #dfe9e0;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.02);
+}
+
+.admin-section.active{
+    display:block;
+}
+
+.admin-section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.admin-section-header h3{
+    color:#255431;
+    font-size:16px;
+    font-weight:700;
+}
+
+/* ADMIN TABLES */
+.table-responsive{
+    width:100%;
+    overflow-x:auto;
+}
+
+.admin-table{
+    width:100%;
+    border-collapse:collapse;
+    text-align:left;
+    font-size:11.5px;
+}
+
+.admin-table th{
+    background:#f4f8f4;
+    color:#3c5843;
+    padding:11px 13px;
+    font-weight:600;
+    border-bottom:1px solid #dce8de;
+}
+
+.admin-table td{
+    padding:11px 13px;
+    border-bottom:1px solid #edf3ee;
+    color:#374e3d;
+    vertical-align:middle;
+}
+
+.admin-table tr:hover td{
+    background:#fafdfa;
+}
+
+.table-thumb{
+    width:44px;
+    height:44px;
+    border-radius:8px;
+    object-fit:cover;
+    background:#f0f5f1;
+    border:1px solid #dce8de;
+}
+
+.action-btns{
+    display:flex;
+    gap:6px;
+}
+
+.action-btn{
+    padding:5px 10px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    cursor:pointer;
+    border:none;
+}
+
+.action-edit{ background:#eaf5eb; color:#286f38; }
+.action-edit:hover{ background:#d6ecda; }
+
+.action-delete{ background:#fdecee; color:#c53744; }
+.action-delete:hover{ background:#f9d5d8; }
+
+.badge-status{
+    display:inline-block;
+    padding:4px 9px;
+    border-radius:12px;
+    font-size:9.5px;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.status-processing{ background:#e0f2fe; color:#0369a1; }
+.status-shipped{ background:#ede9fe; color:#6d28d9; }
+.status-delivered{ background:#dcfce7; color:#15803d; }
+.status-cancelled{ background:#fee2e2; color:#b91c1c; }
+
+/* =========================================================
+   AI ASSISTANT CHAT WIDGET
+========================================================= */
+.ai-assistant-toggle{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    z-index:9990;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:linear-gradient(135deg, #245d34, #3ea25a);
+    color:white;
+    border-radius:50px;
+    padding:10px 18px 10px 14px;
+    box-shadow:0 8px 24px rgba(36,93,52,0.35);
+    border:2px solid rgba(255,255,255,0.4);
+    cursor:pointer;
+    transition:all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ai-assistant-toggle:hover{
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 12px 30px rgba(36,93,52,0.45);
+}
+
+.ai-toggle-icon{
+    width:32px;
+    height:32px;
+    background:white;
+    color:#245d34;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    position:relative;
+}
+
+.ai-toggle-pulse{
+    position:absolute;
+    top:-2px;
+    right:-2px;
+    width:10px;
+    height:10px;
+    background:#10b981;
+    border:2px solid white;
+    border-radius:50%;
+    animation:pulseDot 1.6s infinite;
+}
+
+@keyframes pulseDot{
+    0% { transform:scale(0.9); opacity:1; }
+    50% { transform:scale(1.4); opacity:0.6; }
+    100% { transform:scale(0.9); opacity:1; }
+}
+
+.ai-toggle-label{
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+}
+
+.ai-toggle-label strong{
+    font-size:12.5px;
+    font-weight:700;
+    line-height:1.2;
+}
+
+.ai-toggle-label small{
+    font-size:9px;
+    color:#dcfce7;
+    opacity:0.9;
+}
+
+/* CHAT MODAL WINDOW */
+.ai-chat-window{
+    position:fixed;
+    bottom:90px;
+    right:24px;
+    width:380px;
+    max-width:calc(100vw - 32px);
+    height:560px;
+    max-height:calc(100vh - 120px);
+    background:white;
+    border-radius:18px;
+    box-shadow:0 18px 45px rgba(12,42,20,0.22);
+    border:1px solid #d4e7d7;
+    display:flex;
+    flex-direction:column;
+    z-index:9995;
+    overflow:hidden;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(25px) scale(0.95);
+    transition:all .3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ai-chat-window.open{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0) scale(1);
+}
+
+.ai-chat-header{
+    background:linear-gradient(135deg, #1c4e2a, #2f7d43);
+    color:white;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.ai-header-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.ai-avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:white;
+    color:#266436;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+.ai-status-text h4{
+    font-size:13.5px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.ai-online-dot{
+    width:8px;
+    height:8px;
+    background:#34d399;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.ai-status-text p{
+    font-size:10px;
+    color:#c4eed0;
+}
+
+.ai-header-actions{
+    display:flex;
+    gap:6px;
+}
+
+.ai-header-btn{
+    background:rgba(255,255,255,0.15);
+    color:white;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    transition:.2s;
+}
+
+.ai-header-btn:hover{
+    background:rgba(255,255,255,0.3);
+}
+
+/* CHAT MESSAGES AREA */
+.ai-chat-messages{
+    flex:1;
+    padding:16px;
+    overflow-y:auto;
+    background:#f8faf8;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.chat-bubble{
+    max-width:85%;
+    padding:10px 14px;
+    border-radius:14px;
+    font-size:12px;
+    line-height:1.5;
+    animation:bubbleFade .2s ease;
+}
+
+@keyframes bubbleFade{
+    from{opacity:0; transform:translateY(6px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.chat-bubble.bot{
+    background:white;
+    color:#24412c;
+    border:1px solid #dce8df;
+    align-self:flex-start;
+    border-top-left-radius:3px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.03);
+}
+
+.chat-bubble.user{
+    background:#2b6e3b;
+    color:white;
+    align-self:flex-end;
+    border-top-right-radius:3px;
+    box-shadow:0 2px 8px rgba(43,110,59,0.25);
+}
+
+/* QUICK PROMPT SUGGESTION CHIPS */
+.ai-quick-prompts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:8px;
+}
+
+.quick-chip{
+    background:#eaf5eb;
+    border:1px solid #c7e6cc;
+    color:#20562e;
+    font-size:10.5px;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:16px;
+    cursor:pointer;
+    transition:all .15s ease;
+}
+
+.quick-chip:hover{
+    background:#3e884d;
+    color:white;
+    border-color:#3e884d;
+}
+
+/* INLINE PLANT PRODUCT CARD IN CHAT */
+.ai-plant-card{
+    background:#ffffff;
+    border:1px solid #d6e8d9;
+    border-radius:10px;
+    padding:9px;
+    margin-top:8px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,0.04);
+}
+
+.ai-plant-card img{
+    width:55px;
+    height:55px;
+    border-radius:8px;
+    object-fit:cover;
+    background:#eef5ef;
+}
+
+.ai-plant-info{
+    flex:1;
+    min-width:0;
+}
+
+.ai-plant-info h5{
+    font-size:12px;
+    font-weight:700;
+    color:#204f29;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.ai-plant-price{
+    font-size:12px;
+    font-weight:700;
+    color:#2e753c;
+    margin:2px 0 4px;
+}
+
+.ai-plant-price del{
+    color:#8f9e92;
+    font-size:10px;
+    margin-left:4px;
+    font-weight:normal;
+}
+
+.ai-plant-actions{
+    display:flex;
+    gap:5px;
+}
+
+.ai-plant-actions button{
+    padding:3px 8px;
+    font-size:10px;
+    border-radius:4px;
+    font-weight:600;
+}
+
+.ai-order-card{
+    background:#f0f9f2;
+    border:1px solid #c6e6cd;
+    border-radius:10px;
+    padding:10px;
+    margin-top:8px;
+}
+
+.ai-order-card h5{
+    color:#1f552b;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:4px;
+}
+
+/* CHAT INPUT FORM */
+.ai-chat-footer{
+    padding:10px 14px;
+    background:white;
+    border-top:1px solid #e1ece3;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.ai-chat-input{
+    flex:1;
+    border:1px solid #d2e4d5;
+    border-radius:24px;
+    padding:8px 14px;
+    font-size:12px;
+    outline:none;
+    background:#fafdfb;
+}
+
+.ai-chat-input:focus{
+    border-color:#3e884d;
+    background:white;
+}
+
+.ai-send-btn{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#3e884d;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    flex-shrink:0;
+}
+
+.ai-send-btn:hover{
+    background:#2f6e3c;
+}
+
+/* =========================================================
+   MODALS
+========================================================= */
+.modal-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:rgba(12, 28, 16, 0.65);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    z-index:9000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    opacity:0;
+    transition:opacity .2s ease;
+}
+
+.modal-overlay.show{
+    display:flex;
+    opacity:1;
+}
+
+.modal-content{
+    background:white;
+    border-radius:16px;
+    max-width:550px;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    padding:24px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+    transform:scale(.94);
+    transition:transform .2s ease;
+}
+
+.modal-overlay.show .modal-content{
+    transform:scale(1);
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #e5ede6;
+    padding-bottom:12px;
+    margin-bottom:14px;
+}
+
+.modal-header h3{
+    color:#265431;
+    font-size:16px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.modal-close{
+    background:none;
+    border:none;
+    font-size:20px;
+    color:#738879;
+    cursor:pointer;
+}
+.modal-close:hover{ color:#dc3545; }
+
+/* Custom Delete Confirmation Modal */
+.delete-modal-box {
+    text-align: center;
+    padding: 10px 8px;
+}
+
+.delete-modal-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #dc2626;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.delete-modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 6px;
+}
+
+.delete-modal-text {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+.delete-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-danger-action {
+    background: #dc2626;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-danger-action:hover {
+    background: #b91c1c;
+}
+
+/* =========================================================
+   CUSTOM GREENLEAF NOTIFICATION
+========================================================= */
+.custom-notification {
+    position: fixed;
+    top: 85px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-30px);
+    width: 580px;
+    max-width: calc(100% - 30px);
+    background: #ffffff;
+    border: 1px solid #34d399;
+    border-left: 5px solid #10b981;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: none;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 99999;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-notification.show {
+    display: flex;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.notification-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #10b981;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.notification-content strong {
+    color: #065f46;
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.notification-content span {
+    color: #4b5563;
+    font-size: 11.5px;
+}
+
+.notification-close {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.notification-close:hover {
+    color: #111827;
+}
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translate(-50%,100px);
+    background:#224729;
+    color:white;
+    padding:8px 16px;
+    border-radius:6px;
+    font-size:11px;
+    z-index:3000;
+    opacity:0;
+    transition:.3s ease;
+    box-shadow:0 4px 14px rgba(0,0,0,.15);
+}
+
+.toast.show{
+    transform:translate(-50%,0);
+    opacity:1;
+}
+
+.empty-page{
+    background:white;
+    border:1px solid #e0e9e1;
+    border-radius:14px;
+    padding:40px 18px;
+    text-align:center;
+    grid-column:1/-1;
+}
+
+.empty-page-icon{
+    font-size:34px;
+    color:#669c6e;
+    margin-bottom:7px;
+}
+
+.empty-page h3{
+    color:#2d5835;
+    font-size:15px;
+}
+
+.empty-page p{
+    color:#6f7f73;
+    font-size:11px;
+    margin:3px 0 10px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+footer{
+    background:#1f4627;
+    color:#d5e8d8;
+    padding:15px 5%;
+    margin-top:auto;
+}
+
+.footer-content{
+    max-width:1250px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:11px;
+}
+
+.footer-social{
+    display:flex;
+    gap:12px;
+}
+
+.footer-social a{
+    color:#d5e8d8;
+    font-size:13.5px;
+    transition:.2s;
+}
+
+.footer-social a:hover{
+    color:#a8e6b1;
+}
+
+/* =========================================================
+   RESPONSIVE MEDIA QUERIES
+========================================================= */
+@media(max-width:780px){
+    .navbar{
+        min-height:56px;
+        flex-wrap:wrap;
+        padding:7px 4%;
+    }
+    .nav-links{
+        order:3;
+        width:100%;
+        overflow-x:auto;
+        justify-content:flex-start;
+        padding-top:4px;
+    }
+    .plant-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:10px;
+    }
+    .plants-layout{
+        grid-template-columns:1fr;
+    }
+    .filter-panel{
+        position:relative;
+        top:0;
+    }
+    .details-wrapper{
+        grid-template-columns:1fr;
+        gap:18px;
+    }
+    .cart-page-layout,
+    .checkout-layout,
+    .contact-layout{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+    .ai-chat-window{
+        right:12px;
+        left:12px;
+        width:auto;
+        bottom:85px;
+        height:480px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     CUSTOM GREENLEAF NOTIFICATION TOAST
+========================================================= -->
+<div id="customNotification" class="custom-notification">
+    <div class="notification-icon">
+        <i class="fa-solid fa-check"></i>
+    </div>
+    <div class="notification-content">
+        <strong id="notificationTitle">Success</strong>
+        <span id="notificationMessage">Action completed successfully.</span>
+    </div>
+    <button class="notification-close" onclick="hideNotification()" aria-label="Close">
+        &times;
+    </button>
+</div>
+
+<!-- =========================================================
+     NAVIGATION HEADER
+========================================================= -->
+<header class="navbar">
+    <button class="logo" onclick="showPage('home')">
+        <i class="fa-solid fa-leaf"></i>
+        GreenLeaf
+    </button>
+
+    <nav class="nav-links">
+        <button id="nav-home" class="active" onclick="showPage('home')">
+            <i class="fa-solid fa-house"></i> Home
+        </button>
+        <button id="nav-plants" onclick="showPage('plants')">
+            <i class="fa-solid fa-seedling"></i> Plants
+        </button>
+        <button id="nav-about" onclick="showPage('about')">
+            <i class="fa-solid fa-circle-info"></i> About
+        </button>
+        <button id="nav-contact" onclick="showPage('contact')">
+            <i class="fa-solid fa-envelope"></i> Contact
+        </button>
+        <button id="nav-admin" onclick="checkAdminNav()">
+            <i class="fa-solid fa-shield-halved"></i> Admin Portal
+        </button>
+    </nav>
+
+    <div class="nav-icons">
+        <button class="icon-btn" onclick="showPage('wishlist')" title="Wishlist">
+            <i class="fa-regular fa-heart"></i>
+            <span class="count" id="wishlistCount">0</span>
+        </button>
+
+        <button class="icon-btn" onclick="showPage('cart')" title="Cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="count" id="cartCount">0</span>
+        </button>
+
+        <button class="admin-nav-btn" id="adminAuthBtn" onclick="handleAdminAuthBtn()">
+            <i class="fa-solid fa-lock"></i>
+            <span>Admin</span>
+        </button>
+    </div>
+</header>
+
+<!-- =========================================================
+     1. HOME PAGE
+========================================================= -->
+<section id="homePage" class="page active">
+    <div class="hero">
+        <div class="hero-image">
+            <div class="hero-content">
+                <div class="hero-small">Welcome to GreenLeaf</div>
+                <h1>
+                    Bring Nature
+                    <span>Into Your Space</span>
+                </h1>
+                <p>
+                    Discover beautiful indoor, outdoor, flowering and succulent plants for your home, office and garden.
+                </p>
+                <div class="hero-buttons">
+                    <button class="primary-btn" onclick="showPage('plants')">
+                        Explore Plants <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button class="secondary-btn" onclick="openAIChat('Best indoor plants for beginner')">
+                        <i class="fa-solid fa-robot"></i> Ask Plant AI
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="explore-bar">
+            <div>
+                <h2>Explore Our Plants</h2>
+                <p>Find the perfect green companion for your home and garden.</p>
+            </div>
+            <button class="explore-button" onclick="showPage('plants')">
+                View All Plants <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="section-heading">
+            <div>
+                <h2>Popular Plants</h2>
+                <p>Our customer favourite selections</p>
+            </div>
+        </div>
+
+        <div class="plant-grid" id="homePlantGrid"></div>
+    </div>
+</section>
+
+<!-- =========================================================
+     2. PLANTS CATALOG PAGE
+========================================================= -->
+<section id="plantsPage" class="page">
+    <div class="page-container">
+        <div class="explore-bar">
+            <div>
+                <h2>Explore Our Plants</h2>
+                <p>Search, filter and shop your favourite plants.</p>
+            </div>
+            <span style="font-size:12px; font-weight:600; color:#356e43; display:inline-flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-leaf"></i>
+                <span id="plantTotal">24+ Plants</span>
+            </span>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="plants-top">
+            <div class="search-box">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search plants by name..." oninput="applyFilters()">
+            </div>
+        </div>
+
+        <div class="plants-layout">
+            <!-- FILTERS -->
+            <aside class="filter-panel">
+                <h3><i class="fa-solid fa-sliders"></i> Filters</h3>
+                <div class="filter-group">
+                    <h4>Category</h4>
+                    <label class="filter-option">
+                        <input type="radio" name="category" value="all" checked onchange="applyFilters()">
+                        All Plants
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="category" value="indoor" onchange="applyFilters()">
+                        Indoor
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="category" value="outdoor" onchange="applyFilters()">
+                        Outdoor
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="category" value="flowering" onchange="applyFilters()">
+                        Flowering
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="category" value="succulent" onchange="applyFilters()">
+                        Succulents
+                    </label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Price Range</h4>
+                    <select id="priceFilter" class="price-select" onchange="applyFilters()">
+                        <option value="all">All Prices</option>
+                        <option value="under500">Under ₹500</option>
+                        <option value="500to1000">₹500 - ₹1000</option>
+                        <option value="above1000">Above ₹1000</option>
+                    </select>
+                </div>
+
+                <button class="clear-filter" onclick="clearFilters()">
+                    <i class="fa-solid fa-rotate-left"></i> Clear Filters
+                </button>
+            </aside>
+
+            <!-- PRODUCTS GRID -->
+            <main>
+                <div class="section-heading">
+                    <div>
+                        <h2>Available Plants</h2>
+                        <p id="resultCount">Showing plants</p>
+                    </div>
+                </div>
+                <div class="plant-grid" id="plantsGrid"></div>
+            </main>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================
+     3. PRODUCT DETAILS PAGE
+========================================================= -->
+<section id="detailsPage" class="page">
+    <div class="page-container">
+        <div class="details-wrapper">
+            <div class="gallery">
+                <div class="thumbnails" id="thumbnailContainer"></div>
+                <img id="detailsImage" class="main-image" src="" alt="Plant preview">
+            </div>
+
+            <div class="details-content">
+                <div class="details-category" id="detailsCategory"></div>
+                <h1 id="detailsName">Plant Name</h1>
+
+                <div class="details-rating">
+                    <span class="stars" id="detailsStars"></span>
+                    <span id="detailsRating" style="font-weight:600; color:#3a5240;">4.8</span>
+                    <span id="detailsReviewsCount">| 128 reviews</span>
+                </div>
+
+                <div class="details-price-wrap">
+                    <span class="details-price" id="detailsPrice">₹0</span>
+                    <span class="details-old-price" id="detailsOldPrice"></span>
+                </div>
+
+                <div class="details-discount" id="detailsDiscount"></div>
+                <p class="details-description" id="detailsDescription"></p>
+
+                <div class="details-info">
+                    <div class="info-box">
+                        <small>Plant Type</small>
+                        <strong id="detailsType">-</strong>
+                    </div>
+                    <div class="info-box">
+                        <small>Light</small>
+                        <strong id="detailsLight">-</strong>
+                    </div>
+                    <div class="info-box">
+                        <small>Water</small>
+                        <strong id="detailsWater">-</strong>
+                    </div>
+                    <div class="info-box">
+                        <small>Suitable For</small>
+                        <strong id="detailsSuitable">-</strong>
+                    </div>
+                </div>
+
+                <div class="details-actions">
+                    <button class="primary-btn" id="detailsCartBtn">
+                        <i class="fa-solid fa-cart-shopping"></i> Add to Cart
+                    </button>
+                    <button class="view-btn" id="detailsWishlistBtn">
+                        <i class="fa-regular fa-heart"></i> Add to Wishlist
+                    </button>
+                    <button class="view-btn" onclick="showPage('plants')">
+                        ← Back to Plants
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================
+     4. WISHLIST PAGE
+========================================================= -->
+<section id="wishlistPage" class="page">
+    <div class="page-container">
+        <div class="wishlist-layout">
+            <div class="wishlist-header">
+                <div>
+                    <h2><i class="fa-regular fa-heart"></i> My Wishlist</h2>
+                    <p>Save plants you love for later.</p>
+                </div>
+                <span id="wishlistPageCount" style="font-size:11.5px; font-weight:600; color:#3e884d;">0 plants</span>
+            </div>
+            <div class="plant-grid" id="wishlistPageGrid"></div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================
+     5. CART PAGE
+========================================================= */
+<section id="cartPage" class="page">
+    <div class="page-container">
+        <div class="explore-bar">
+            <div>
+                <h2><i class="fa-solid fa-cart-shopping"></i> My Cart</h2>
+                <p>Review your selected plants.</p>
+            </div>
+            <span id="cartPageCount" style="font-size:11.5px; font-weight:600; color:#3e884d;">0 items</span>
+        </div>
+
+        <div class="cart-page-layout">
+            <div class="cart-items-box">
+                <div class="section-heading">
+                    <div>
+                        <h2>Shopping Cart</h2>
+                        <p>Manage your plants and quantities</p>
+                    </div>
+                </div>
+                <div id="cartPageItems"></div>
+            </div>
+
+            <div class="cart-summary">
+                <h2>Order Summary</h2>
+                <div class="summary-row">
+                    <span>Items</span>
+                    <span id="summaryItems">0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="summarySubtotal">₹0</span>
+                </div>
+                <div class="summary-row summary-discount">
+                    <span>Discount</span>
+                    <span id="summaryDiscount">- ₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <span style="color:#2f793b; font-weight:600;">Free</span>
+                </div>
+                <div class="summary-line"></div>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="summaryTotal">₹0</span>
+                </div>
+
+                <button class="checkout-btn" onclick="showPage('checkout')">
+                    <i class="fa-solid fa-credit-card"></i> Proceed to Checkout
+                </button>
+                <button class="continue-btn" onclick="showPage('plants')">
+                    ← Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================
+     6. CHECKOUT PAGE
+========================================================= -->
+<section id="checkoutPage" class="page">
+    <div class="page-container">
+        <div class="explore-bar">
+            <div>
+                <h2><i class="fa-solid fa-credit-card"></i> Checkout</h2>
+                <p>Enter your delivery and payment details.</p>
+            </div>
+        </div>
+
+        <div class="checkout-layout">
+            <div class="checkout-card">
+                <h2>Customer Details</h2>
+                <form id="checkoutForm" onsubmit="placeOrder(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input id="customerName" type="text" placeholder="e.g. Rahul Sharma" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input id="customerPhone" type="tel" placeholder="e.g. +91 98765 43210" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input id="customerEmail" type="email" placeholder="e.g. rahul@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Pincode *</label>
+                            <input id="customerPincode" type="text" placeholder="e.g. 625531" required>
+                        </div>
+                        <div class="form-group full">
+                            <label>Delivery Address *</label>
+                            <textarea id="customerAddress" placeholder="House number, street, area..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input id="customerCity" type="text" placeholder="City" required>
+                        </div>
+                        <div class="form-group">
+                            <label>State *</label>
+                            <input id="customerState" type="text" placeholder="State" required>
+                        </div>
+                    </div>
+
+                    <h2 style="margin-top:14px; font-size:14px;">Payment Method</h2>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="UPI" checked>
+                            <i class="fa-solid fa-mobile-screen"></i> UPI / GPay
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="Card">
+                            <i class="fa-solid fa-credit-card"></i> Credit / Debit Card
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="COD">
+                            <i class="fa-solid fa-money-bill"></i> Cash on Delivery
+                        </label>
+                    </div>
+
+                    <button class="place-order" type="submit">
+                        <i class="fa-solid fa-lock"></i> Place Order Now
+                    </button>
+                </form>
+            </div>
+
+            <div class="cart-summary">
+                <h2>Order Summary</h2>
+                <div id="checkoutSummary"></div>
+                <div class="summary-line"></div>
+                <div class="summary-total">
+                    <span>Total Amount</span>
+                    <span id="checkoutTotal">₹0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================
+     7. ABOUT PAGE
+========================================================= -->
+<section id="aboutPage" class="page">
+    <div class="page-container">
+        <div class="about-compact-box">
+            <div class="about-header-compact">
+                <div class="text-left">
+                    <small>About GreenLeaf</small>
+                    <h1>Growing a Greener Future</h1>
+                    <p>
+                        GreenLeaf is an online plant shopping platform crafted to make discovering, comparing, and caring for healthy plants simple and accessible for everyone.
+                    </p>
+                </div>
+                <div class="badge-icon">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+            </div>
+
+            <div class="about-features-grid">
+                <div class="about-feat-card">
+                    <i class="fa-solid fa-plant-wilt"></i>
+                    <h3>Quality Plants</h3>
+                    <p>Handpicked indoor, outdoor, flowering, and succulent varieties grown in optimal nursery conditions.</p>
+                </div>
+                <div class="about-feat-card">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                    <h3>Plant Knowledge</h3>
+                    <p>Clear, tailored guidance on lighting, watering, and care so your green companions thrive.</p>
+                </div>
+                <div class="about-feat-card">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h3>Easy Shopping</h3>
+                    <p>Seamless browsing, smart filters, wishlist management, and secure checkout with doorstep delivery.</p>
+                </div>
+            </div>
+
+            <div class="about-vision-box">
+                <h2><i class="fa-solid fa-bullseye"></i> Our Vision</h2>
+                <p>
+                    Our mission is to empower everyone to bring more greenery into their homes, offices, and gardens. GreenLeaf seamlessly connects mindful shoppers with quality plants and actionable care insights suited for every living space.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================
+     8. CONTACT PAGE
+========================================================= -->
+<section id="contactPage" class="page">
+    <div class="page-container">
+        <div class="contact-compact-box">
+            <div class="contact-layout">
+                <div class="contact-info-panel">
+                    <div>
+                        <small>Get In Touch</small>
+                        <h1>Contact Us</h1>
+                        <p>Have a question about a plant, care instructions, or an order? Our botanists and support team are here to help.</p>
+
+                        <div class="contact-items-list">
+                            <div class="contact-item-row">
+                                <i class="fa-solid fa-phone"></i>
+                                <div>
+                                    <small>Call Support</small>
+                                    <span>+91 98765 43210</span>
+                                </div>
+                            </div>
+                            <div class="contact-item-row">
+                                <i class="fa-solid fa-envelope"></i>
+                                <div>
+                                    <small>Email Us</small>
+                                    <span>hello@greenleaf.com</span>
+                                </div>
+                            </div>
+                            <div class="contact-item-row">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <div>
+                                    <small>Headquarters</small>
+                                    <span>Tamil Nadu, India</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-support-badge">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Support Hours: Mon - Sat (9:00 AM - 7:00 PM IST)</span>
+                    </div>
+                </div>
+
+                <div class="contact-form-panel">
+                    <h2>Send Us a Message</h2>
+                    <p>Fill in your query and our team will get back to you within 24 hours.</p>
+
+                    <form onsubmit="submitContact(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Your Name *</label>
+                                <input id="contactName" type="text" placeholder="e.g. Rahul Sharma" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address *</label>
+                                <input id="contactEmail" type="email" placeholder="e.g. rahul@example.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Subject *</label>
+                            <input id="contactSubject" type="text" placeholder="Plant Inquiry / Order Support" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Message *</label>
+                            <textarea id="contactMessage" placeholder="Write your message here..." style="min-height:85px;" required></textarea>
+                        </div>
+
+                        <button class="contact-submit" type="submit">
+                            <i class="fa-solid fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================
+     9. ADMIN CENTER (PROTECTED DASHBOARD)
+========================================================= -->
+<section id="adminPage" class="page">
+    <div class="page-container">
+        <div class="admin-dashboard">
+            <!-- ADMIN HEADER -->
+            <div class="admin-header">
+                <div>
+                    <h1><i class="fa-solid fa-user-shield"></i> GreenLeaf Executive Admin Portal</h1>
+                    <p>Manage plant inventory, customer orders, revenue analytics, and inquiries.</p>
+                </div>
+                <div class="admin-header-actions">
+                    <button class="primary-btn" onclick="openAddPlantModal()">
+                        <i class="fa-solid fa-plus"></i> Add New Plant
+                    </button>
+                    <button class="secondary-btn" onclick="adminLogout()">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout & Exit
+                    </button>
+                </div>
+            </div>
+
+            <!-- ANALYTICS STAT CARDS -->
+            <div class="admin-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                    <div class="stat-info">
+                        <h4>Total Revenue</h4>
+                        <h2 id="adminStatRevenue">₹0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-box"></i></div>
+                    <div class="stat-info">
+                        <h4>Customer Orders</h4>
+                        <h2 id="adminStatOrders">0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fa-solid fa-seedling"></i></div>
+                    <div class="stat-info">
+                        <h4>Active Plants</h4>
+                        <h2 id="adminStatPlants">0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fa-solid fa-envelope-open-text"></i></div>
+                    <div class="stat-info">
+                        <h4>Inquiries</h4>
+                        <h2 id="adminStatMessages">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN TABS -->
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" onclick="switchAdminTab('plantsTab', this)">
+                    <i class="fa-solid fa-leaf"></i> Plant Catalog (<span id="tabPlantCount">0</span>)
+                </button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('ordersTab', this)">
+                    <i class="fa-solid fa-truck-ramp-box"></i> Orders (<span id="tabOrderCount">0</span>)
+                </button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('messagesTab', this)">
+                    <i class="fa-solid fa-comments"></i> Inquiries (<span id="tabMsgCount">0</span>)
+                </button>
+            </div>
+
+            <!-- TAB 1: PLANT CATALOG -->
+            <div id="plantsTab" class="admin-section active">
+                <div class="admin-section-header">
+                    <div>
+                        <h3>Plant Inventory Management</h3>
+                        <p style="font-size:11px; color:#687c6e;">Add, edit details, adjust pricing, or remove catalog items.</p>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <input type="text" id="adminPlantSearch" placeholder="Search inventory..." oninput="renderAdminPlants()" style="padding:6px 12px; border:1px solid #d4e4d6; border-radius:6px; font-size:11.5px; outline:none;">
+                        <button class="primary-btn" onclick="openAddPlantModal()">
+                            <i class="fa-solid fa-plus"></i> Add Plant
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Plant Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Rating</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminPlantsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 2: ORDER MANAGEMENT -->
+            <div id="ordersTab" class="admin-section">
+                <div class="admin-section-header">
+                    <div>
+                        <h3>Customer Orders</h3>
+                        <p style="font-size:11px; color:#687c6e;">Track customer purchases and update dispatch status.</p>
+                    </div>
+                    <button class="view-btn" onclick="promptClearAllOrders()">
+                        <i class="fa-solid fa-trash-can"></i> Clear All Orders
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminOrdersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 3: CONTACT INQUIRIES -->
+            <div id="messagesTab" class="admin-section">
+                <div class="admin-section-header">
+                    <div>
+                        <h3>Customer Inquiries & Messages</h3>
+                        <p style="font-size:11px; color:#687c6e;">Messages sent via the website Contact form.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminMessagesTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================
+     FLOATING AI ASSISTANT CHAT WIDGET
+========================================================= -->
+<div class="ai-assistant-toggle" onclick="toggleAIChat()" title="Open Flora AI Plant Assistant">
+    <div class="ai-toggle-icon">
+        <i class="fa-solid fa-robot"></i>
+        <div class="ai-toggle-pulse"></div>
+    </div>
+    <div class="ai-toggle-label">
+        <strong>Flora AI</strong>
+        <small>Plant & Price Assistant</small>
+    </div>
+</div>
+
+<div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">
+        <div class="ai-header-profile">
+            <div class="ai-avatar">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+            <div class="ai-status-text">
+                <h4>Flora AI <span class="ai-online-dot"></span></h4>
+                <p>GreenLeaf Botanical & Store Assistant</p>
+            </div>
+        </div>
+        <div class="ai-header-actions">
+            <button class="ai-header-btn" onclick="resetAIChat()" title="Clear chat"><i class="fa-solid fa-rotate-left"></i></button>
+            <button class="ai-header-btn" onclick="toggleAIChat()" title="Close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <div class="ai-chat-messages" id="aiChatMessages">
+        <div class="chat-bubble bot">
+            🌱 <b>Hello! I'm Flora, your GreenLeaf AI Assistant.</b><br>
+            I can help you search plants, check current prices, recommend plants for your home/office, and track your orders.
+            <div class="ai-quick-prompts">
+                <button class="quick-chip" onclick="handleChipClick('Show plants under ₹500')">💰 Plants under ₹500</button>
+                <button class="quick-chip" onclick="handleChipClick('Best indoor plants')">🌿 Best indoor plants</button>
+                <button class="quick-chip" onclick="handleChipClick('Flowering plants prices')">🌸 Flowering plants</button>
+                <button class="quick-chip" onclick="handleChipClick('Track my order')">📦 Track order</button>
+            </div>
+        </div>
+    </div>
+
+    <form class="ai-chat-footer" onsubmit="handleAISend(event)">
+        <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Ask about plants, prices, care or orders..." autocomplete="off">
+        <button type="submit" class="ai-send-btn" aria-label="Send">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </form>
+</div>
+
+<!-- =========================================================
+     ADMIN LOGIN MODAL
+========================================================= -->
+<div id="adminLoginModal" class="modal-overlay" onclick="closeAdminLoginOnBackdrop(event)">
+    <div class="modal-content" style="max-width:400px; padding:28px;">
+        <div style="text-align:center; margin-bottom:16px;">
+            <div style="width:52px; height:52px; border-radius:50%; background:#edf7ee; color:#276636; display:inline-flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:8px;">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 style="color:#204c2b; font-size:18px; font-weight:700;">Admin Security Portal</h3>
+            <p style="font-size:11.5px; color:#647568; margin-top:2px;">
+                Authorized personnel only. Please sign in to access executive controls.
+            </p>
+        </div>
+
+        <form onsubmit="handleAdminLogin(event)">
+            <div class="form-group">
+                <label>Admin Username</label>
+                <div style="position:relative;">
+                    <i class="fa-solid fa-user" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#768d7c; font-size:12px;"></i>
+                    <input type="text" id="adminUserInput" placeholder="Enter username (admin)" required style="padding-left:30px;" autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Admin Password</label>
+                <div style="position:relative;">
+                    <i class="fa-solid fa-lock" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#768d7c; font-size:12px;"></i>
+                    <input type="password" id="adminPasswordInput" placeholder="Enter password (admin123)" required style="padding-left:30px; padding-right:32px;" autocomplete="current-password">
+                    <button type="button" onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#768d7c; font-size:13px;">
+                        <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="adminLoginError" style="display:none; color:#dc2626; font-size:11px; margin-bottom:10px; font-weight:600; text-align:center;">
+                <i class="fa-solid fa-circle-exclamation"></i> Invalid Username or Password!
+            </div>
+
+            <button type="submit" class="primary-btn" style="width:100%; padding:10px; font-size:12.5px; margin-top:6px;">
+                <i class="fa-solid fa-right-to-bracket"></i> Authenticate & Enter Dashboard
+            </button>
+
+            <div style="margin-top:14px; text-align:center; font-size:10.5px; color:#788f7d; border-top:1px solid #e5ede6; padding-top:10px;">
+                Default Credentials: <b>admin</b> / <b style="color:#2f6e3c;">admin123</b>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================
+     ADD / EDIT PLANT MODAL
+========================================================= -->
+<div id="plantModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="plantModalTitle"><i class="fa-solid fa-seedling"></i> Add New Plant</h3>
+            <button class="modal-close" onclick="closePlantModal()">&times;</button>
+        </div>
+
+        <form id="plantForm" onsubmit="savePlantForm(event)">
+            <input type="hidden" id="editPlantId">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Plant Name *</label>
+                    <input type="text" id="formPlantName" placeholder="e.g. Fiddle Leaf Fig" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Category *</label>
+                    <select id="formPlantCategory" required>
+                        <option value="indoor">Indoor</option>
+                        <option value="outdoor">Outdoor</option>
+                        <option value="flowering">Flowering</option>
+                        <option value="succulent">Succulent</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Price (₹) *</label>
+                    <input type="number" id="formPlantPrice" placeholder="e.g. 499" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Old Price (₹) *</label>
+                    <input type="number" id="formPlantOldPrice" placeholder="e.g. 699" min="1" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Discount (%)</label>
+                    <input type="number" id="formPlantDiscount" placeholder="e.g. 25" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label>Plant Type</label>
+                    <input type="text" id="formPlantType" placeholder="e.g. Tropical / Fern">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Image URL *</label>
+                <input type="text" id="formPlantImage" placeholder="images/Plant Name.jpg" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Light Requirement</label>
+                    <input type="text" id="formPlantLight" placeholder="e.g. Low to Bright Indirect">
+                </div>
+
+                <div class="form-group">
+                    <label>Water Requirement</label>
+                    <input type="text" id="formPlantWater" placeholder="e.g. Low / Medium">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Suitable For</label>
+                <input type="text" id="formPlantSuitable" placeholder="e.g. Home, Office, Garden">
+            </div>
+
+            <div class="form-group">
+                <label>Description *</label>
+                <textarea id="formPlantDescription" placeholder="Enter concise plant care and description..." required></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+                <button type="button" class="view-btn" onclick="closePlantModal()">Cancel</button>
+                <button type="submit" class="primary-btn">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Plant
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================
+     DELETE CONFIRMATION MODAL
+========================================================= -->
+<div id="deleteConfirmModal" class="modal-overlay" onclick="closeDeleteConfirmOnBackdrop(event)">
+    <div class="modal-content" style="max-width:420px; padding:26px;">
+        <div class="delete-modal-box">
+            <div class="delete-modal-icon">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 class="delete-modal-title" id="deleteConfirmTitle">Confirm Deletion</h3>
+            <p class="delete-modal-text" id="deleteConfirmMessage">
+                Are you sure you want to delete this item? This action cannot be undone.
+            </p>
+            <div class="delete-modal-actions">
+                <button type="button" class="view-btn" onclick="closeDeleteConfirmModal()">Cancel</button>
+                <button type="button" class="btn-danger-action" id="confirmDeleteExecuteBtn" onclick="executeConfirmedDeletion()">
+                    <i class="fa-solid fa-trash"></i> Yes, Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-content">
+        <p>© 2026 GreenLeaf. Grow naturally.</p>
+        <div class="footer-social">
+            <a href="https://www.whatsapp.com/" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        </div>
+    </div>
+</footer>
+
+<!-- =========================================================
+     JAVASCRIPT LOGIC
+========================================================= -->
+<script>
+
+// 1. Automatically fetch data from backend when loaded
+async function syncWithBackend(){
+    try {
+        const res = await fetch("/api/plants");
+        if(res.ok){
+            const serverPlants = await res.json();
+            if(Array.isArray(serverPlants) && serverPlants.length > 0){
+                plants = serverPlants;
+            }
+            backendAvailable = true;
+            console.log("Connected to GreenLeaf backend API");
+        }
+    } catch(e) {
+        console.log("Running in client / offline mode");
+    }
+    renderStoreData();
+}
+
+// 2. Automatically sync every cart, plant, or order update to backend
+function saveData(){
+    localStorage.setItem("greenleafPlants", JSON.stringify(plants));
+    localStorage.setItem("greenleafWishlist", JSON.stringify(wishlist));
+    localStorage.setItem("greenleafCart", JSON.stringify(cart));
+    localStorage.setItem("greenleafOrders", JSON.stringify(orders));
+    localStorage.setItem("greenleafMessages", JSON.stringify(messages));
+    
+    // If backend is running, sync to server.js
+    if(backendAvailable){
+        fetch("/api/plants", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(plants) }).catch(()=>{});
+        fetch("/api/orders", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(orders) }).catch(()=>{});
+        fetch("/api/messages", { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(messages) }).catch(()=>{});
+    }
+}
+/* =========================================================
+   INITIAL DATASET
+========================================================= */
+const initialPlants = [
+    {
+        id:1,
+        name:"Snake Plant",
+        category:"indoor",
+        price:399,
+        oldPrice:499,
+        discount:20,
+        rating:4.8,
+        reviews:128,
+        image:"images/Snake Plant.jpg",
+        description:"A hardy indoor plant that is easy to maintain and perfect for modern homes.",
+        type:"Indoor Plant",
+        light:"Low to Bright",
+        water:"Low",
+        suitable:"Home & Office"
+    },
+    {
+        id:2,
+        name:"Monstera Deliciosa",
+        category:"indoor",
+        price:699,
+        oldPrice:899,
+        discount:22,
+        rating:4.9,
+        reviews:214,
+        image:"images/Monstera Deliciosa.jpg",
+        description:"A tropical plant with beautiful split leaves that creates a fresh indoor atmosphere.",
+        type:"Tropical",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Living Room"
+    },
+    {
+        id:3,
+        name:"Aloe Vera",
+        category:"succulent",
+        price:299,
+        oldPrice:399,
+        discount:25,
+        rating:4.8,
+        reviews:191,
+        image:"images/Aloe Vera.jpg",
+        description:"A useful succulent plant that requires minimal care and plenty of natural light.",
+        type:"Succulent",
+        light:"Bright",
+        water:"Low",
+        suitable:"Home"
+    },
+    {
+        id:4,
+        name:"Areca Palm",
+        category:"indoor",
+        price:899,
+        oldPrice:1199,
+        discount:25,
+        rating:4.6,
+        reviews:94,
+        image:"images/Areca Palm.jpg",
+        description:"A graceful palm that adds a tropical green touch to large indoor spaces.",
+        type:"Palm",
+        light:"Bright",
+        water:"Medium",
+        suitable:"Living Room"
+    },
+    {
+        id:5,
+        name:"Money Plant (Golden Pothos)",
+        category:"indoor",
+        price:349,
+        oldPrice:449,
+        discount:22,
+        rating:4.8,
+        reviews:312,
+        image:"images/Money Plant (Golden Pothos).jpg",
+        description:"A popular easy-care plant with attractive trailing vines.",
+        type:"Climber",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Home & Office"
+    },
+    {
+        id:6,
+        name:"Red Rose Plant",
+        category:"flowering",
+        price:549,
+        oldPrice:699,
+        discount:21,
+        rating:4.7,
+        reviews:183,
+        image:"images/Red Rose Plant.jpg",
+        description:"A classic flowering plant that brings colour and fragrance to your garden.",
+        type:"Flowering",
+        light:"Bright",
+        water:"Medium",
+        suitable:"Garden"
+    },
+    {
+        id:7,
+        name:"Jade Plant",
+        category:"succulent",
+        price:449,
+        oldPrice:599,
+        discount:25,
+        rating:4.8,
+        reviews:145,
+        image:"images/Jade Plant.jpg",
+        description:"A compact succulent with thick green leaves and an attractive appearance.",
+        type:"Succulent",
+        light:"Bright",
+        water:"Low",
+        suitable:"Desk & Home"
+    },
+    {
+        id:8,
+        name:"Rubber Plant (Ficus Elastica)",
+        category:"indoor",
+        price:799,
+        oldPrice:999,
+        discount:20,
+        rating:4.7,
+        reviews:121,
+        image:"images/Rubber Plant (Ficus Elastica).jpg",
+        description:"A bold indoor plant with large glossy leaves and a modern appearance.",
+        type:"Indoor",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Living Room"
+    },
+    {
+        id:9,
+        name:"French Lavender",
+        category:"flowering",
+        price:599,
+        oldPrice:799,
+        discount:25,
+        rating:4.9,
+        reviews:202,
+        image:"images/french lavender.jpg",
+        description:"A fragrant flowering plant that brings a relaxing natural feel to your space.",
+        type:"Flowering",
+        light:"Bright",
+        water:"Low",
+        suitable:"Balcony"
+    },
+    {
+        id:10,
+        name:"Desert Cactus",
+        category:"succulent",
+        price:249,
+        oldPrice:349,
+        discount:29,
+        rating:4.6,
+        reviews:109,
+        image:"images/desert cactus.jpg",
+        description:"A small low-maintenance plant suitable for desks and sunny windows.",
+        type:"Cactus",
+        light:"Bright",
+        water:"Very Low",
+        suitable:"Desk"
+    },
+    {
+        id:11,
+        name:"Variegated Croton",
+        category:"outdoor",
+        price:699,
+        oldPrice:899,
+        discount:22,
+        rating:4.7,
+        reviews:86,
+        image:"images/Variegated Croton.jpg",
+        description:"A colourful foliage plant with vibrant leaves that brighten gardens and balconies.",
+        type:"Foliage",
+        light:"Bright",
+        water:"Medium",
+        suitable:"Garden"
+    },
+    {
+        id:12,
+        name:"ZZ Plant (Zamioculcas)",
+        category:"indoor",
+        price:749,
+        oldPrice:999,
+        discount:25,
+        rating:4.8,
+        reviews:157,
+        image:"images/ZZ Plant (Zamioculcas).jpg",
+        description:"A highly adaptable indoor plant with attractive glossy foliage.",
+        type:"Indoor",
+        light:"Low to Medium",
+        water:"Low",
+        suitable:"Office"
+    },
+    {
+        id:13,
+        name:"Boston Fern",
+        category:"outdoor",
+        price:599,
+        oldPrice:749,
+        discount:20,
+        rating:4.5,
+        reviews:72,
+        image:"images/Boston Fern.jpg",
+        description:"A lush fern that adds a fresh and natural texture to shaded spaces.",
+        type:"Fern",
+        light:"Indirect",
+        water:"High",
+        suitable:"Balcony"
+    },
+    {
+        id:14,
+        name:"Spider Plant",
+        category:"indoor",
+        price:399,
+        oldPrice:499,
+        discount:20,
+        rating:4.9,
+        reviews:249,
+        image:"images/Spider Plant.jpg",
+        description:"A popular indoor plant with long arching leaves and easy maintenance.",
+        type:"Indoor",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Home & Office"
+    },
+    {
+        id:15,
+        name:"Golden Marigold",
+        category:"flowering",
+        price:299,
+        oldPrice:399,
+        discount:25,
+        rating:4.7,
+        reviews:131,
+        image:"images/Golden Marigold.jpg",
+        description:"A cheerful flowering plant with bright blooms that looks beautiful in gardens.",
+        type:"Flowering",
+        light:"Bright",
+        water:"Medium",
+        suitable:"Garden"
+    },
+    {
+        id:16,
+        name:"Bamboo Palm",
+        category:"outdoor",
+        price:999,
+        oldPrice:1299,
+        discount:23,
+        rating:4.6,
+        reviews:64,
+        image:"images/Bamboo Palm.jpg",
+        description:"A graceful palm that creates a refreshing tropical atmosphere.",
+        type:"Palm",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Home & Garden"
+    },
+    {
+        id:17,
+        name:"Premium Purple Orchid",
+        category:"flowering",
+        price:1299,
+        oldPrice:1699,
+        discount:24,
+        rating:4.9,
+        reviews:98,
+        image:"images/Premium Purple Orchid.jpg",
+        description:"A premium orchid with elegant flowers, perfect for interiors and gifting.",
+        type:"Orchid",
+        light:"Bright Indirect",
+        water:"Medium",
+        suitable:"Home & Gifts"
+    },
+    {
+        id:18,
+        name:"Anthurium Red",
+        category:"flowering",
+        price:1499,
+        oldPrice:1899,
+        discount:21,
+        rating:4.8,
+        reviews:87,
+        image:"images/Anthurium Red.jpg",
+        description:"A premium flowering plant with striking red blooms and glossy leaves.",
+        type:"Flowering",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Living Room"
+    },
+    {
+        id:19,
+        name:"Premium Rose Bush",
+        category:"flowering",
+        price:1199,
+        oldPrice:1599,
+        discount:25,
+        rating:4.7,
+        reviews:75,
+        image:"images/Premium Rose Bush.jpg",
+        description:"A premium rose bush offering colourful blooms and an elegant garden appearance.",
+        type:"Rose",
+        light:"Bright",
+        water:"Medium",
+        suitable:"Garden"
+    },
+    {
+        id:20,
+        name:"White Moth Orchid",
+        category:"flowering",
+        price:1799,
+        oldPrice:2299,
+        discount:22,
+        rating:4.9,
+        reviews:116,
+        image:"images/White Moth Orchid.jpg",
+        description:"A beautiful premium white orchid ideal for elegant homes and special occasions.",
+        type:"Orchid",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Home & Gifts"
+    },
+    {
+        id:21,
+        name:"Bougainvillea Pink",
+        category:"flowering",
+        price:1099,
+        oldPrice:1399,
+        discount:21,
+        rating:4.6,
+        reviews:83,
+        image:"images/Bougainvillea Pink.jpg",
+        description:"A colourful flowering plant that creates a vibrant garden display.",
+        type:"Flowering",
+        light:"Bright",
+        water:"Medium",
+        suitable:"Garden"
+    },
+    {
+        id:22,
+        name:"Lucky Bamboo Spiral",
+        category:"indoor",
+        price:599,
+        oldPrice:799,
+        discount:25,
+        rating:4.8,
+        reviews:224,
+        image:"images/Lucky Bamboo Spiral.jpg",
+        description:"A stylish indoor plant suitable for desks, offices and modern interiors.",
+        type:"Indoor",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Office"
+    },
+    {
+        id:23,
+        name:"Calathea Medallion",
+        category:"indoor",
+        price:899,
+        oldPrice:1199,
+        discount:25,
+        rating:4.7,
+        reviews:118,
+        image:"images/Calathea Medallion.jpg",
+        description:"A decorative tropical indoor plant with beautiful patterned foliage.",
+        type:"Tropical",
+        light:"Indirect",
+        water:"Medium",
+        suitable:"Home"
+    },
+    {
+        id:24,
+        name:"Red Aglaonema",
+        category:"indoor",
+        price:799,
+        oldPrice:999,
+        discount:20,
+        rating:4.8,
+        reviews:139,
+        image:"images/Red Aglaonema.jpg",
+        description:"A beautiful low-maintenance foliage plant perfect for indoor spaces.",
+        type:"Foliage",
+        light:"Low to Medium",
+        water:"Medium",
+        suitable:"Office & Home"
+    }
+];
+
+/* =========================================================
+   STATE MANAGEMENT & STORAGE
+========================================================= */
+let plants = JSON.parse(localStorage.getItem("greenleafPlants"));
+if(!plants || !Array.isArray(plants) || plants.length === 0){
+    plants = [...initialPlants];
+    localStorage.setItem("greenleafPlants", JSON.stringify(plants));
+}
+
+let wishlist = JSON.parse(localStorage.getItem("greenleafWishlist")) || [];
+let cart = JSON.parse(localStorage.getItem("greenleafCart")) || [];
+let orders = JSON.parse(localStorage.getItem("greenleafOrders")) || [];
+let messages = JSON.parse(localStorage.getItem("greenleafMessages")) || [];
+let isAdminLoggedIn = JSON.parse(sessionStorage.getItem("greenleafAdminAuth")) || false;
+
+let currentPlant = null;
+let pendingDelete = { type: null, id: null };
+let backendAvailable = false;
+
+function saveData(){
+    localStorage.setItem("greenleafPlants", JSON.stringify(plants));
+    localStorage.setItem("greenleafWishlist", JSON.stringify(wishlist));
+    localStorage.setItem("greenleafCart", JSON.stringify(cart));
+    localStorage.setItem("greenleafOrders", JSON.stringify(orders));
+    localStorage.setItem("greenleafMessages", JSON.stringify(messages));
+}
+
+function updateCounts(){
+    const wishlistCount = document.getElementById("wishlistCount");
+    if(wishlistCount) wishlistCount.innerText = wishlist.length;
+
+    const totals = getCartTotals();
+    const cartCount = document.getElementById("cartCount");
+    if(cartCount) cartCount.innerText = totals.quantity;
+
+    const plantTotal = document.getElementById("plantTotal");
+    if(plantTotal) plantTotal.innerText = plants.length + "+ Plants";
+}
+
+/* =========================================================
+   PAGE ROUTING & DISPLAY
+========================================================= */
+function showPage(pageName){
+    if(pageName === "admin" && !isAdminLoggedIn){
+        openAdminLogin();
+        return;
+    }
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    const target = document.getElementById(pageName + "Page");
+    if(target){
+        target.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav-links button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const activeNav = document.getElementById("nav-" + pageName);
+    if(activeNav){
+        activeNav.classList.add("active");
+    }
+
+    if(pageName === "admin"){
+        renderAdminDashboard();
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+function ratingStars(rating){
+    const full = Math.floor(rating || 5);
+    return "★".repeat(full) + "☆".repeat(5 - full);
+}
+
+/* =========================================================
+   PLANT CARD COMPONENT
+========================================================= */
+function createPlantCard(plant){
+    const liked = wishlist.includes(plant.id);
+
+    return `
+    <article class="plant-card">
+        <div class="plant-image-wrap">
+            <img src="${plant.image}" alt="${plant.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=400&q=80'">
+            <span class="discount-badge">${plant.discount || 20}% OFF</span>
+            <button class="heart-button ${liked ? "liked" : ""}" onclick="toggleWishlist(${plant.id},event)" aria-label="Wishlist">
+                <i class="fa-${liked ? "solid" : "regular"} fa-heart"></i>
+            </button>
+            <div class="product-actions">
+                <button class="product-view" onclick="viewPlant(${plant.id})">
+                    <i class="fa-solid fa-eye"></i> View
+                </button>
+                <button class="product-cart" onclick="addToCart(${plant.id})">
+                    <i class="fa-solid fa-cart-shopping"></i> Add
+                </button>
+            </div>
+        </div>
+
+        <div class="plant-info">
+            <div class="plant-category">${plant.category}</div>
+            <h3>${plant.name}</h3>
+            <div class="rating">
+                <span class="rating-stars">${ratingStars(plant.rating || 4.8)}</span>
+                <span class="rating-number">${plant.rating || 4.8} (${plant.reviews || 50})</span>
+            </div>
+            <p class="plant-description">${plant.description || ""}</p>
+            <div class="plant-bottom">
+                <div>
+                    <span class="price">₹${plant.price}</span>
+                    <span class="old-price">₹${plant.oldPrice || Math.round(plant.price * 1.25)}</span>
+                </div>
+                <button class="view-btn" onclick="viewPlant(${plant.id})">
+                    View Details
+                </button>
+            </div>
+        </div>
+    </article>
+    `;
+}
+
+function renderHomePlants(){
+    const grid = document.getElementById("homePlantGrid");
+    if(!grid) return;
+    grid.innerHTML = plants.slice(0,8).map(createPlantCard).join("");
+}
+
+function applyFilters(){
+    const search = document.getElementById("searchInput")?.value.toLowerCase().trim() || "";
+    const category = document.querySelector('input[name="category"]:checked')?.value || "all";
+    const price = document.getElementById("priceFilter")?.value || "all";
+
+    const filtered = plants.filter(plant => {
+        const matchesSearch = plant.name.toLowerCase().includes(search);
+        const matchesCategory = category === "all" || plant.category.toLowerCase() === category.toLowerCase();
+        let matchesPrice = true;
+        if(price === "under500") matchesPrice = plant.price < 500;
+        if(price === "500to1000") matchesPrice = plant.price >= 500 && plant.price <= 1000;
+        if(price === "above1000") matchesPrice = plant.price > 1000;
+
+        return matchesSearch && matchesCategory && matchesPrice;
+    });
+
+    const grid = document.getElementById("plantsGrid");
+    const result = document.getElementById("resultCount");
+
+    if(!grid) return;
+
+    if(result){
+        result.innerText = `Showing ${filtered.length} of ${plants.length} plants`;
+    }
+
+    if(filtered.length === 0){
+        grid.innerHTML = `
+            <div class="empty-page">
+                <div class="empty-page-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <h3>No Plants Found</h3>
+                <p>Try another keyword or reset the filters.</p>
+                <button class="primary-btn" onclick="clearFilters()" style="margin:8px auto 0;">Clear Filters</button>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = filtered.map(createPlantCard).join("");
+}
+
+function renderPlants(){
+    applyFilters();
+}
+
+function clearFilters(){
+    const allRadio = document.querySelector('input[name="category"][value="all"]');
+    if(allRadio) allRadio.checked = true;
+
+    const priceFilter = document.getElementById("priceFilter");
+    if(priceFilter) priceFilter.value = "all";
+
+    const searchInput = document.getElementById("searchInput");
+    if(searchInput) searchInput.value = "";
+
+    applyFilters();
+}
+
+/* =========================================================
+   PRODUCT DETAILS
+========================================================= */
+function viewPlant(id){
+    const plant = plants.find(item => item.id === id);
+    if(!plant) return;
+
+    currentPlant = plant;
+
+    document.getElementById("detailsImage").src = plant.image;
+    document.getElementById("detailsName").innerText = plant.name;
+    document.getElementById("detailsCategory").innerText = plant.category;
+    document.getElementById("detailsPrice").innerText = "₹" + plant.price;
+    document.getElementById("detailsOldPrice").innerText = "₹" + (plant.oldPrice || Math.round(plant.price * 1.25));
+    document.getElementById("detailsDiscount").innerText = (plant.discount || 20) + "% OFF";
+    document.getElementById("detailsRating").innerText = plant.rating || 4.8;
+    document.getElementById("detailsReviewsCount").innerText = `| ${plant.reviews || 50} reviews`;
+    document.getElementById("detailsStars").innerText = ratingStars(plant.rating || 4.8);
+    document.getElementById("detailsDescription").innerText = plant.description || "";
+    document.getElementById("detailsType").innerText = plant.type || "Foliage";
+    document.getElementById("detailsLight").innerText = plant.light || "Bright Indirect";
+    document.getElementById("detailsWater").innerText = plant.water || "Medium";
+    document.getElementById("detailsSuitable").innerText = plant.suitable || "Home & Office";
+
+    const thumbnailContainer = document.getElementById("thumbnailContainer");
+    thumbnailContainer.innerHTML = `
+        <img src="${plant.image}" class="thumbnail active" onclick="switchDetailThumb(this, '${plant.image}')">
+        <img src="${plant.image}" class="thumbnail" onclick="switchDetailThumb(this, '${plant.image}')">
+    `;
+
+    updateDetailsWishlistButton();
+    showPage("details");
+}
+
+function switchDetailThumb(el, imgUrl){
+    document.getElementById("detailsImage").src = imgUrl;
+    document.querySelectorAll(".thumbnail").forEach(item => item.classList.remove("active"));
+    el.classList.add("active");
+}
+
+document.getElementById("detailsCartBtn")?.addEventListener("click", function(){
+    if(currentPlant) addToCart(currentPlant.id);
+});
+
+document.getElementById("detailsWishlistBtn")?.addEventListener("click", function(){
+    if(currentPlant){
+        toggleWishlist(currentPlant.id);
+        updateDetailsWishlistButton();
+    }
+});
+
+function updateDetailsWishlistButton(){
+    if(!currentPlant) return;
+    const button = document.getElementById("detailsWishlistBtn");
+    const liked = wishlist.includes(currentPlant.id);
+
+    button.innerHTML = `
+        <i class="fa-${liked ? "solid" : "regular"} fa-heart"></i>
+        ${liked ? "Remove from Wishlist" : "Add to Wishlist"}
+    `;
+}
+
+/* =========================================================
+   WISHLIST LOGIC
+========================================================= */
+function toggleWishlist(id,event){
+    if(event) event.stopPropagation();
+    const index = wishlist.indexOf(id);
+
+    if(index === -1){
+        wishlist.push(id);
+        showToast("Added to wishlist ♥");
+    }else{
+        wishlist.splice(index,1);
+        showToast("Removed from wishlist");
+    }
+
+    saveData();
+    updateCounts();
+    renderHomePlants();
+    applyFilters();
+    renderWishlistPage();
+    updateDetailsWishlistButton();
+}
+
+function renderWishlistPage(){
+    const grid = document.getElementById("wishlistPageGrid");
+    const count = document.getElementById("wishlistPageCount");
+    if(!grid) return;
+
+    if(count){
+        count.innerText = wishlist.length + (wishlist.length === 1 ? " plant" : " plants");
+    }
+
+    if(wishlist.length === 0){
+        grid.innerHTML = `
+            <div class="empty-page">
+                <div class="empty-page-icon"><i class="fa-regular fa-heart"></i></div>
+                <h3>Your Wishlist is Empty</h3>
+                <p>Save your favourite plants and shop them later.</p>
+                <button class="primary-btn" onclick="showPage('plants')" style="margin:8px auto 0;">Explore Plants</button>
+            </div>
+        `;
+        return;
+    }
+
+    const saved = wishlist.map(id => plants.find(plant => plant.id === id)).filter(Boolean);
+    grid.innerHTML = saved.map(createPlantCard).join("");
+}
+
+/* =========================================================
+   CART & ORDER LOGIC
+========================================================= */
+function addToCart(id){
+    const plant = plants.find(item => item.id === id);
+    if(!plant) return;
+
+    const existing = cart.find(item => item.id === id);
+    if(existing){
+        existing.quantity = (existing.quantity || 1) + 1;
+    }else{
+        cart.push({ ...plant, quantity: 1 });
+    }
+
+    saveData();
+    updateCounts();
+    renderCartPage();
+    showToast(plant.name + " added to cart!");
+}
+
+function changeQuantity(id, change){
+    const item = cart.find(item => item.id === id);
+    if(!item) return;
+
+    item.quantity = (item.quantity || 1) + change;
+    if(item.quantity <= 0){
+        cart = cart.filter(product => product.id !== id);
+    }
+
+    saveData();
+    updateCounts();
+    renderCartPage();
+}
+
+function removeCart(id){
+    const item = cart.find(product => product.id === id);
+    cart = cart.filter(product => product.id !== id);
+
+    saveData();
+    updateCounts();
+    renderCartPage();
+
+    if(item) showToast(item.name + " removed from cart");
+}
+
+function getCartTotals(){
+    let subtotal = 0;
+    let discount = 0;
+    let quantity = 0;
+
+    cart.forEach(item => {
+        const qty = item.quantity || 1;
+        const oldP = item.oldPrice || Math.round(item.price * 1.25);
+        quantity += qty;
+        subtotal += oldP * qty;
+        discount += (oldP - item.price) * qty;
+    });
+
+    return {
+        subtotal,
+        discount,
+        total: subtotal - discount,
+        quantity
+    };
+}
+
+function renderCartPage(){
+    const container = document.getElementById("cartPageItems");
+    if(!container) return;
+
+    const count = document.getElementById("cartPageCount");
+    const summaryItems = document.getElementById("summaryItems");
+    const summarySubtotal = document.getElementById("summarySubtotal");
+    const summaryDiscount = document.getElementById("summaryDiscount");
+    const summaryTotal = document.getElementById("summaryTotal");
+
+    const totals = getCartTotals();
+
+    if(count) count.innerText = `${totals.quantity} ${totals.quantity === 1 ? "item" : "items"}`;
+    if(summaryItems) summaryItems.innerText = totals.quantity;
+    if(summarySubtotal) summarySubtotal.innerText = "₹" + totals.subtotal;
+    if(summaryDiscount) summaryDiscount.innerText = "- ₹" + totals.discount;
+    if(summaryTotal) summaryTotal.innerText = "₹" + totals.total;
+
+    if(cart.length === 0){
+        container.innerHTML = `
+            <div class="empty-page">
+                <div class="empty-page-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                <h3>Your Cart is Empty</h3>
+                <p>Add some beautiful plants to continue.</p>
+                <button class="primary-btn" onclick="showPage('plants')" style="margin:8px auto 0;">Explore Plants</button>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = cart.map(item => `
+        <div class="cart-page-card">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="cart-page-info">
+                <h3>${item.name}</h3>
+                <p>${item.category}</p>
+                <div class="cart-price">₹${item.price}</div>
+                <div class="quantity-box">
+                    <button onclick="changeQuantity(${item.id},-1)">−</button>
+                    <span>${item.quantity || 1}</span>
+                    <button onclick="changeQuantity(${item.id},1)">+</button>
+                </div>
+            </div>
+            <button class="remove-cart-page" onclick="removeCart(${item.id})">
+                <i class="fa-solid fa-trash"></i> Remove
+            </button>
+        </div>
+    `).join("");
+}
+
+function renderCheckoutSummary(){
+    const box = document.getElementById("checkoutSummary");
+    const totalElement = document.getElementById("checkoutTotal");
+    if(!box) return;
+
+    if(cart.length === 0){
+        box.innerHTML = "<p style='font-size:11.5px; color:#6b7c70;'>Your cart is empty.</p>";
+        totalElement.innerText = "₹0";
+        return;
+    }
+
+    const totals = getCartTotals();
+
+    box.innerHTML = cart.map(item => `
+        <div class="summary-row">
+            <span>${item.name} × ${item.quantity || 1}</span>
+            <span>₹${item.price * (item.quantity || 1)}</span>
+        </div>
+    `).join("");
+
+    totalElement.innerText = "₹" + totals.total;
+}
+
+function placeOrder(event){
+    event.preventDefault();
+
+    if(cart.length === 0){
+        showToast("Your cart is empty.");
+        return;
+    }
+
+    const name = document.getElementById("customerName").value;
+    const phone = document.getElementById("customerPhone").value;
+    const email = document.getElementById("customerEmail").value;
+    const pincode = document.getElementById("customerPincode").value;
+    const address = document.getElementById("customerAddress").value;
+    const city = document.getElementById("customerCity").value;
+    const state = document.getElementById("customerState").value;
+    const payment = document.querySelector('input[name="payment"]:checked').value;
+
+    const totals = getCartTotals();
+    const orderId = "GL-" + Math.floor(100000 + Math.random() * 900000);
+    const dateStr = new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+
+    const newOrder = {
+        orderId,
+        date: dateStr,
+        customer: { name, phone, email, pincode, address, city, state },
+        items: [...cart],
+        payment,
+        total: totals.total,
+        status: "Processing"
+    };
+
+    orders.unshift(newOrder);
+    cart = [];
+    saveData();
+    updateCounts();
+
+    showNotification("Order Confirmed!", `Thank you ${name}. Your order #${orderId} has been placed successfully.`);
+    document.getElementById("checkoutForm").reset();
+
+    setTimeout(() => showPage("home"), 1800);
+}
+
+/* =========================================================
+   CONTACT FORM
+========================================================= */
+function submitContact(event){
+    event.preventDefault();
+    const name = document.getElementById("contactName").value;
+    const email = document.getElementById("contactEmail").value;
+    const subject = document.getElementById("contactSubject").value;
+    const message = document.getElementById("contactMessage").value;
+    const dateStr = new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+
+    const newMsg = {
+        id: Date.now(),
+        date: dateStr,
+        name,
+        email,
+        subject,
+        message
+    };
+
+    messages.unshift(newMsg);
+    saveData();
+
+    showNotification("Message Sent!", `Thank you, ${name}. Our botany team will respond to ${email} shortly.`);
+    event.target.reset();
+}
+
+let toastTimer;
+function showToast(message){
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+let notificationTimer;
+function showNotification(title, message) {
+    const notification = document.getElementById("customNotification");
+    const titleElement = document.getElementById("notificationTitle");
+    const messageElement = document.getElementById("notificationMessage");
+
+    if (!notification) return;
+
+    titleElement.textContent = title;
+    messageElement.textContent = message;
+
+    notification.classList.add("show");
+
+    clearTimeout(notificationTimer);
+    notificationTimer = setTimeout(() => {
+        hideNotification();
+    }, 3800);
+}
+
+function hideNotification() {
+    const notification = document.getElementById("customNotification");
+    if (notification) notification.classList.remove("show");
+}
+
+/* =========================================================
+   PROFESSIONAL ADMIN CENTER & SECURITY
+========================================================= */
+function checkAdminNav(){
+    if(!isAdminLoggedIn){
+        openAdminLogin();
+    } else {
+        showPage("admin");
+    }
+}
+
+function handleAdminAuthBtn(){
+    if(isAdminLoggedIn){
+        showPage("admin");
+    } else {
+        openAdminLogin();
+    }
+}
+
+function openAdminLogin(){
+    document.getElementById("adminLoginModal").classList.add("show");
+    document.getElementById("adminUserInput").value = "admin";
+    document.getElementById("adminPasswordInput").value = "";
+    document.getElementById("adminLoginError").style.display = "none";
+    document.getElementById("adminPasswordInput").focus();
+}
+
+function closeAdminLogin(){
+    document.getElementById("adminLoginModal").classList.remove("show");
+}
+
+function closeAdminLoginOnBackdrop(e){
+    if(e.target.id === 'adminLoginModal'){
+        closeAdminLogin();
+    }
+}
+
+function togglePasswordVisibility(){
+    const input = document.getElementById("adminPasswordInput");
+    const icon = document.getElementById("togglePasswordIcon");
+    if(input.type === "password"){
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+// Fixed Admin Login with local verification fallback
+async function handleAdminLogin(event){
+    event.preventDefault();
+    const user = document.getElementById("adminUserInput").value.trim();
+    const pass = document.getElementById("adminPasswordInput").value.trim();
+
+    let authenticated = false;
+
+    // Check credentials locally (default: admin / admin123)
+    if(user === "admin" && pass === "admin123"){
+        authenticated = true;
+    }
+
+    // Try backend if available
+    if(!authenticated && backendAvailable){
+        try{
+            const response = await fetch("/api/admin/login", {
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({ username:user, password:pass })
+            });
+            if(response.ok) authenticated = true;
+        } catch(e){}
+    }
+
+    if(authenticated){
+        isAdminLoggedIn = true;
+        sessionStorage.setItem("greenleafAdminAuth", "true");
+        closeAdminLogin();
+        updateAdminNavState();
+        showNotification("Admin Authenticated", "Welcome back, Executive Administrator!");
+        showPage("admin");
+    } else {
+        document.getElementById("adminLoginError").style.display = "block";
+    }
+}
+
+function adminLogout(){
+    isAdminLoggedIn = false;
+    sessionStorage.removeItem("greenleafAdminAuth");
+    updateAdminNavState();
+    showToast("Logged out from Admin Center");
+    showPage("home");
+}
+
+function updateAdminNavState(){
+    const btn = document.getElementById("adminAuthBtn");
+    if(isAdminLoggedIn){
+        btn.classList.add("logged-in");
+        btn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> <span>Dashboard</span>`;
+    } else {
+        btn.classList.remove("logged-in");
+        btn.innerHTML = `<i class="fa-solid fa-lock"></i> <span>Admin</span>`;
+    }
+}
+
+function switchAdminTab(tabId, btn){
+    document.querySelectorAll(".admin-section").forEach(sec => sec.classList.remove("active"));
+    document.querySelectorAll(".admin-tab-btn").forEach(b => b.classList.remove("active"));
+
+    const target = document.getElementById(tabId);
+    if(target) target.classList.add("active");
+    if(btn) btn.classList.add("active");
+}
+
+function renderAdminDashboard(){
+    const totalRev = orders.reduce((sum, ord) => sum + (ord.status !== "Cancelled" ? (ord.total || 0) : 0), 0);
+    document.getElementById("adminStatRevenue").innerText = "₹" + totalRev.toLocaleString();
+    document.getElementById("adminStatOrders").innerText = orders.length;
+    document.getElementById("adminStatPlants").innerText = plants.length;
+    document.getElementById("adminStatMessages").innerText = messages.length;
+
+    document.getElementById("tabPlantCount").innerText = plants.length;
+    document.getElementById("tabOrderCount").innerText = orders.length;
+    document.getElementById("tabMsgCount").innerText = messages.length;
+
+    renderAdminPlants();
+    renderAdminOrders();
+    renderAdminMessages();
+}
+
+function renderAdminPlants(){
+    const tbody = document.getElementById("adminPlantsTableBody");
+    if(!tbody) return;
+
+    const query = document.getElementById("adminPlantSearch")?.value.toLowerCase().trim() || "";
+    const filtered = plants.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+
+    if(filtered.length === 0){
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; color:#718576;">No plants found matching search.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(p => `
+        <tr>
+            <td><img src="${p.image}" alt="${p.name}" class="table-thumb" onerror="this.src='https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=400&q=80'"></td>
+            <td><strong>${p.name}</strong><br><small style="color:#6d8272;">${p.type || '-'}</small></td>
+            <td><span style="text-transform:capitalize; background:#edf7ee; color:#2d6939; padding:3px 8px; border-radius:4px; font-weight:600; font-size:10px;">${p.category}</span></td>
+            <td><strong>₹${p.price}</strong> <span style="text-decoration:line-through; color:#95a398; font-size:10px;">₹${p.oldPrice || ''}</span></td>
+            <td>${p.discount || 20}% OFF</td>
+            <td><i class="fa-solid fa-star" style="color:#f59e0b; font-size:10px;"></i> ${p.rating || 4.8}</td>
+            <td>
+                <div class="action-btns">
+                    <button class="action-btn action-edit" onclick="openEditPlantModal(${p.id})">
+                        <i class="fa-solid fa-pen"></i> Edit
+                    </button>
+                    <button class="action-btn action-delete" onclick="promptDeletePlant(${p.id})">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join("");
+}
+
+function openAddPlantModal(){
+    document.getElementById("plantModalTitle").innerHTML = `<i class="fa-solid fa-seedling"></i> Add New Plant`;
+    document.getElementById("plantForm").reset();
+    document.getElementById("editPlantId").value = "";
+    document.getElementById("plantModal").classList.add("show");
+}
+
+function openEditPlantModal(id){
+    const plant = plants.find(p => p.id === id);
+    if(!plant) return;
+
+    document.getElementById("plantModalTitle").innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Edit Plant`;
+    document.getElementById("editPlantId").value = plant.id;
+    document.getElementById("formPlantName").value = plant.name;
+    document.getElementById("formPlantCategory").value = plant.category.toLowerCase();
+    document.getElementById("formPlantPrice").value = plant.price;
+    document.getElementById("formPlantOldPrice").value = plant.oldPrice || Math.round(plant.price * 1.25);
+    document.getElementById("formPlantDiscount").value = plant.discount || 20;
+    document.getElementById("formPlantType").value = plant.type || "";
+    document.getElementById("formPlantImage").value = plant.image;
+    document.getElementById("formPlantLight").value = plant.light || "";
+    document.getElementById("formPlantWater").value = plant.water || "";
+    document.getElementById("formPlantSuitable").value = plant.suitable || "";
+    document.getElementById("formPlantDescription").value = plant.description || "";
+
+    document.getElementById("plantModal").classList.add("show");
+}
+
+function closePlantModal(){
+    document.getElementById("plantModal").classList.remove("show");
+}
+
+function savePlantForm(event){
+    event.preventDefault();
+
+    const editId = document.getElementById("editPlantId").value;
+    const name = document.getElementById("formPlantName").value.trim();
+    const category = document.getElementById("formPlantCategory").value;
+    const price = Number(document.getElementById("formPlantPrice").value);
+    const oldPrice = Number(document.getElementById("formPlantOldPrice").value);
+    const discount = Number(document.getElementById("formPlantDiscount").value) || Math.round(((oldPrice - price) / oldPrice) * 100);
+    const type = document.getElementById("formPlantType").value.trim() || "Foliage";
+    const image = document.getElementById("formPlantImage").value.trim();
+    const light = document.getElementById("formPlantLight").value.trim() || "Medium";
+    const water = document.getElementById("formPlantWater").value.trim() || "Medium";
+    const suitable = document.getElementById("formPlantSuitable").value.trim() || "Home & Office";
+    const description = document.getElementById("formPlantDescription").value.trim();
+
+    if(editId){
+        const idx = plants.findIndex(p => p.id === Number(editId));
+        if(idx !== -1){
+            plants[idx] = {
+                ...plants[idx],
+                name, category, price, oldPrice, discount, type, image, light, water, suitable, description
+            };
+            showNotification("Plant Updated", `"${name}" catalog details have been updated successfully.`);
+        }
+    } else {
+        const newPlant = {
+            id: Date.now(),
+            name,
+            category,
+            price,
+            oldPrice,
+            discount,
+            rating: 4.8,
+            reviews: 1,
+            type,
+            image,
+            light,
+            water,
+            suitable,
+            description
+        };
+        plants.unshift(newPlant);
+        showNotification("New Plant Added", `"${name}" has been published to the GreenLeaf store.`);
+    }
+
+    saveData();
+    closePlantModal();
+    renderAdminDashboard();
+    renderHomePlants();
+    renderPlants();
+    updateCounts();
+}
+
+function openDeleteConfirmModal(type, id, itemName){
+    pendingDelete = { type, id };
+    const titleEl = document.getElementById("deleteConfirmTitle");
+    const msgEl = document.getElementById("deleteConfirmMessage");
+
+    if(type === 'plant'){
+        titleEl.textContent = "Delete Plant?";
+        msgEl.innerHTML = `Are you sure you want to delete <strong>${itemName}</strong> from your plant inventory?`;
+    } else if(type === 'order'){
+        titleEl.textContent = "Delete Customer Order?";
+        msgEl.innerHTML = `Are you sure you want to permanently delete <strong>${itemName}</strong>?`;
+    } else if(type === 'message'){
+        titleEl.textContent = "Delete Customer Inquiry?";
+        msgEl.innerHTML = `Are you sure you want to delete the <strong>${itemName}</strong>?`;
+    } else if(type === 'clear_orders'){
+        titleEl.textContent = "Clear All Orders?";
+        msgEl.innerHTML = `Are you sure you want to clear <strong>all customer orders</strong>? This cannot be undone.`;
+    }
+
+    document.getElementById("deleteConfirmModal").classList.add("show");
+}
+
+function closeDeleteConfirmModal(){
+    document.getElementById("deleteConfirmModal").classList.remove("show");
+    pendingDelete = { type: null, id: null };
+}
+
+function closeDeleteConfirmOnBackdrop(e){
+    if(e.target.id === 'deleteConfirmModal'){
+        closeDeleteConfirmModal();
+    }
+}
+
+function promptDeletePlant(id){
+    const p = plants.find(item => item.id === id);
+    if(!p) return;
+    openDeleteConfirmModal('plant', id, p.name);
+}
+
+function promptDeleteOrder(orderId){
+    openDeleteConfirmModal('order', orderId, `Order #${orderId}`);
+}
+
+function promptDeleteMessage(id){
+    const m = messages.find(item => item.id === id);
+    const label = m ? `inquiry from ${m.name}` : "this inquiry";
+    openDeleteConfirmModal('message', id, label);
+}
+
+function promptClearAllOrders(){
+    if(orders.length === 0){
+        showNotification("No Orders", "There are no orders to clear.");
+        return;
+    }
+    openDeleteConfirmModal('clear_orders', null, "all orders");
+}
+
+function executeConfirmedDeletion(){
+    if(!pendingDelete.type) return;
+
+    if(pendingDelete.type === 'plant'){
+        const plantObj = plants.find(p => p.id === pendingDelete.id);
+        const name = plantObj ? plantObj.name : "Plant";
+        plants = plants.filter(p => p.id !== pendingDelete.id);
+        wishlist = wishlist.filter(wid => wid !== pendingDelete.id);
+        cart = cart.filter(cid => cid.id !== pendingDelete.id);
+        saveData();
+        renderAdminDashboard();
+        renderHomePlants();
+        renderPlants();
+        renderWishlistPage();
+        renderCartPage();
+        updateCounts();
+        showNotification("Plant Deleted", `"${name}" has been removed from the catalog.`);
+    } 
+    else if(pendingDelete.type === 'order'){
+        const orderId = pendingDelete.id;
+        orders = orders.filter(o => o.orderId !== orderId);
+        saveData();
+        renderAdminDashboard();
+        showNotification("Order Deleted", `Order #${orderId} was deleted successfully.`);
+    } 
+    else if(pendingDelete.type === 'message'){
+        messages = messages.filter(m => m.id !== pendingDelete.id);
+        saveData();
+        renderAdminDashboard();
+        showNotification("Inquiry Deleted", "The customer message has been deleted.");
+    } 
+    else if(pendingDelete.type === 'clear_orders'){
+        orders = [];
+        saveData();
+        renderAdminDashboard();
+        showNotification("Orders Cleared", "All customer orders have been cleared.");
+    }
+
+    closeDeleteConfirmModal();
+}
+
+function renderAdminOrders(){
+    const tbody = document.getElementById("adminOrdersTableBody");
+    if(!tbody) return;
+
+    if(orders.length === 0){
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#768b7b;">No customer orders placed yet.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = orders.map(ord => {
+        const itemsSummary = ord.items.map(it => `${it.name} (x${it.quantity || 1})`).join(", ");
+        const statusClass = `status-${(ord.status || "processing").toLowerCase()}`;
+
+        return `
+        <tr>
+            <td><strong>#${ord.orderId}</strong></td>
+            <td><small style="color:#6e8072;">${ord.date}</small></td>
+            <td>
+                <strong>${ord.customer.name}</strong><br>
+                <small style="color:#677b6c;">${ord.customer.phone} | ${ord.customer.city}</small>
+            </td>
+            <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${itemsSummary}">
+                ${itemsSummary}
+            </td>
+            <td><strong style="color:#2b753b;">₹${ord.total}</strong></td>
+            <td><span style="font-weight:600; font-size:10.5px;">${ord.payment}</span></td>
+            <td>
+                <select onchange="updateOrderStatus('${ord.orderId}', this.value)" class="badge-status ${statusClass}" style="border:none; outline:none; cursor:pointer;">
+                    <option value="Processing" ${ord.status === "Processing" ? "selected" : ""}>Processing</option>
+                    <option value="Shipped" ${ord.status === "Shipped" ? "selected" : ""}>Shipped</option>
+                    <option value="Delivered" ${ord.status === "Delivered" ? "selected" : ""}>Delivered</option>
+                    <option value="Cancelled" ${ord.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+                </select>
+            </td>
+            <td>
+                <button class="action-btn action-delete" onclick="promptDeleteOrder('${ord.orderId}')" title="Delete Order">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        `;
+    }).join("");
+}
+
+function updateOrderStatus(orderId, newStatus){
+    const ord = orders.find(o => o.orderId === orderId);
+    if(ord){
+        ord.status = newStatus;
+        saveData();
+        renderAdminDashboard();
+        showNotification("Status Updated", `Order #${orderId} status changed to ${newStatus}`);
+    }
+}
+
+function renderAdminMessages(){
+    const tbody = document.getElementById("adminMessagesTableBody");
+    if(!tbody) return;
+
+    if(messages.length === 0){
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px; color:#768b7b;">No inquiries received yet.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = messages.map(msg => `
+        <tr>
+            <td><small style="color:#6d8071;">${msg.date}</small></td>
+            <td><strong>${msg.name}</strong></td>
+            <td><a href="mailto:${msg.email}" style="color:#2f743c; text-decoration:none;">${msg.email}</a></td>
+            <td><span style="font-weight:600;">${msg.subject}</span></td>
+            <td style="max-width:240px; color:#556b5b;">${msg.message}</td>
+            <td>
+                <button class="action-btn action-delete" onclick="promptDeleteMessage(${msg.id})" title="Delete Inquiry">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join("");
+}
+
+/* =========================================================
+   AI ASSISTANT (FLORA) LOGIC
+========================================================= */
+function toggleAIChat(){
+    const win = document.getElementById("aiChatWindow");
+    win.classList.toggle("open");
+    if(win.classList.contains("open")){
+        document.getElementById("aiChatInput").focus();
+    }
+}
+
+function openAIChat(initialPrompt){
+    const win = document.getElementById("aiChatWindow");
+    win.classList.add("open");
+    if(initialPrompt){
+        document.getElementById("aiChatInput").value = initialPrompt;
+        handleAISend(new Event('submit'));
+    }
+}
+
+function resetAIChat(){
+    const container = document.getElementById("aiChatMessages");
+    container.innerHTML = `
+        <div class="chat-bubble bot">
+            🌱 <b>Chat cleared!</b> How else can I assist your plant shopping today?
+            <div class="ai-quick-prompts">
+                <button class="quick-chip" onclick="handleChipClick('Show plants under ₹500')">💰 Plants under ₹500</button>
+                <button class="quick-chip" onclick="handleChipClick('Best indoor plants')">🌿 Best indoor plants</button>
+                <button class="quick-chip" onclick="handleChipClick('Flowering plants prices')">🌸 Flowering plants</button>
+                <button class="quick-chip" onclick="handleChipClick('Track my order')">📦 Track order</button>
+            </div>
+        </div>
+    `;
+}
+
+function handleChipClick(text){
+    document.getElementById("aiChatInput").value = text;
+    handleAISend(new Event('submit'));
+}
+
+function handleAISend(event){
+    if(event) event.preventDefault();
+    const input = document.getElementById("aiChatInput");
+    const query = input.value.trim();
+    if(!query) return;
+
+    appendChatMessage(query, 'user');
+    input.value = "";
+
+    // Show temporary typing indicator
+    const typingId = "typing-" + Date.now();
+    appendChatMessage(`<i class="fa-solid fa-circle-notch fa-spin"></i> Flora is searching...`, 'bot', typingId);
+
+    setTimeout(() => {
+        const typingEl = document.getElementById(typingId);
+        if(typingEl) typingEl.remove();
+
+        const responseHtml = processAIQuery(query);
+        appendChatMessage(responseHtml, 'bot');
+    }, 450);
+}
+
+function appendChatMessage(html, sender, id = null){
+    const container = document.getElementById("aiChatMessages");
+    const bubble = document.createElement("div");
+    bubble.className = `chat-bubble ${sender}`;
+    if(id) bubble.id = id;
+    bubble.innerHTML = html;
+    container.appendChild(bubble);
+    container.scrollTop = container.scrollHeight;
+}
+
+// AI Knowledge & Search Processing Engine
+function processAIQuery(q){
+    const text = q.toLowerCase();
+
+    // 1. Order Status Tracking
+    const orderMatch = text.match(/gl-\d{6}/i);
+    if(orderMatch || text.includes("track") || text.includes("order")){
+        if(orderMatch){
+            const orderId = orderMatch[0].toUpperCase();
+            const found = orders.find(o => o.orderId === orderId);
+            if(found){
+                return `
+                    📦 <b>Order Status for #${found.orderId}</b>:
+                    <div class="ai-order-card">
+                        <h5>Status: <span style="color:#2f6e3c;">${found.status}</span></h5>
+                        <div><b>Customer:</b> ${found.customer.name}</div>
+                        <div><b>Total:</b> ₹${found.total} (${found.payment})</div>
+                        <div><b>Items:</b> ${found.items.map(it => it.name).join(", ")}</div>
+                        <div style="font-size:10px; color:#627967; margin-top:4px;">Placed on: ${found.date}</div>
+                    </div>
+                `;
+            } else {
+                return `🔍 I couldn't find order <b>#${orderId}</b> in our records. Please check the order number or ensure you've placed the order on this device.`;
+            }
+        } else if(orders.length > 0){
+            const latest = orders[0];
+            return `
+                📦 Here is your most recent order (<b>#${latest.orderId}</b>):
+                <div class="ai-order-card">
+                    <h5>Status: <span style="color:#2f6e3c;">${latest.status}</span></h5>
+                    <div><b>Delivery To:</b> ${latest.customer.address}, ${latest.customer.city}</div>
+                    <div><b>Total:</b> ₹${latest.total}</div>
+                </div>
+                <small style="color:#5e7264; display:block; margin-top:4px;">You can also check specific orders by typing e.g., <i>"Track order ${latest.orderId}"</i>.</small>
+            `;
+        } else {
+            return `📦 You haven't placed any orders yet. Once you order, you can track it here simply by typing your Order ID (e.g. <b>GL-123456</b>).`;
+        }
+    }
+
+    // 2. Budget / Price Range Search
+    if(text.includes("under 500") || text.includes("cheap") || text.includes("low price") || text.includes("under 400") || text.includes("affordable")){
+        const budget = plants.filter(p => p.price <= 500).slice(0, 4);
+        return formatPlantListReply(`Here are our best affordable plants priced <b>under ₹500</b> with great discounts:`, budget);
+    }
+
+    if(text.includes("under 1000") || text.includes("500 to 1000")){
+        const mid = plants.filter(p => p.price >= 500 && p.price <= 1000).slice(0, 4);
+        return formatPlantListReply(`Here are top selections between <b>₹500 - ₹1000</b>:`, mid);
+    }
+
+    // 3. Category Queries
+    if(text.includes("indoor")){
+        const indoor = plants.filter(p => p.category === "indoor").slice(0, 4);
+        return formatPlantListReply(`🌿 <b>Top Indoor Plants</b> that thrive in home and office spaces:`, indoor);
+    }
+
+    if(text.includes("outdoor") || text.includes("garden") || text.includes("balcony")){
+        const outdoor = plants.filter(p => p.category === "outdoor").slice(0, 4);
+        return formatPlantListReply(`☀️ <b>Outdoor & Balcony Plants</b> that love open air and bright daylight:`, outdoor);
+    }
+
+    if(text.includes("flowering") || text.includes("flower") || text.includes("rose") || text.includes("orchid")){
+        const flowers = plants.filter(p => p.category === "flowering").slice(0, 4);
+        return formatPlantListReply(`🌸 <b>Flowering Plants & Prices</b> available for delivery:`, flowers);
+    }
+
+    if(text.includes("succulent") || text.includes("cactus") || text.includes("aloe")){
+        const succ = plants.filter(p => p.category === "succulent").slice(0, 4);
+        return formatPlantListReply(`🌵 <b>Succulents & Cacti</b> (Low water, high durability):`, succ);
+    }
+
+    // 4. Plant Care Advice
+    if(text.includes("water") || text.includes("light") || text.includes("care") || text.includes("how to grow")){
+        return `
+            💧 <b>Plant Care Essentials from GreenLeaf Botanists</b>:
+            <ul style="margin:6px 0 0 16px; font-size:11.5px; line-height:1.6;">
+                <li><b>Indoor Plants:</b> Water only when the top 1-2 inches of soil feel dry. Place near bright indirect windows.</li>
+                <li><b>Succulents & Cacti:</b> Water very sparingly (every 2-3 weeks). Needs direct sunlight.</li>
+                <li><b>Flowering Plants:</b> Require at least 4-6 hours of sunshine and regular pruning for healthy blooms.</li>
+            </ul>
+            <p style="margin-top:6px;">Need advice for a specific plant? Ask me e.g. <i>"How to care for Snake Plant"</i>.</p>
+        `;
+    }
+
+    // 5. Specific Plant Search by Name
+    const matchedPlants = plants.filter(p => {
+        const pName = p.name.toLowerCase();
+        return text.includes(pName) || pName.split(" ").some(word => word.length > 3 && text.includes(word));
+    });
+
+    if(matchedPlants.length > 0){
+        const target = matchedPlants[0];
+        return `
+            🌿 Found <b>${target.name}</b>:
+            <div class="ai-plant-card">
+                <img src="${target.image}" alt="${target.name}" onerror="this.src='https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=400&q=80'">
+                <div class="ai-plant-info">
+                    <h5>${target.name}</h5>
+                    <div class="ai-plant-price">₹${target.price} <del>₹${target.oldPrice || Math.round(target.price * 1.25)}</del> (${target.discount || 20}% OFF)</div>
+                    <div style="font-size:10px; color:#5b6f60; margin-bottom:4px;">Light: ${target.light} | Water: ${target.water}</div>
+                    <div class="ai-plant-actions">
+                        <button class="primary-btn" onclick="addToCart(${target.id})"><i class="fa-solid fa-cart-shopping"></i> Add</button>
+                        <button class="view-btn" onclick="viewPlant(${target.id})"><i class="fa-solid fa-eye"></i> View</button>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top:6px; font-size:11px; color:#496150;">${target.description}</p>
+        `;
+    }
+
+    // Default fallback
+    return `
+        I searched our nursery for <b>"${escapeHtml(q)}"</b>. You can ask me:
+        <ul style="margin:6px 0 0 16px; font-size:11.5px; line-height:1.6;">
+            <li><b>Prices:</b> <i>"What is the price of Snake Plant?"</i> or <i>"Monstera price"</i></li>
+            <li><b>Budget:</b> <i>"Show plants under ₹500"</i></li>
+            <li><b>Categories:</b> <i>"Best indoor plants"</i>, <i>"Flowering plants"</i></li>
+            <li><b>Orders:</b> <i>"Track order GL-123456"</i></li>
+        </ul>
+    `;
+}
+
+function formatPlantListReply(titleHtml, list){
+    if(list.length === 0){
+        return `${titleHtml}<p style="margin-top:4px;">No matching plants found currently.</p>`;
+    }
+
+    let cards = list.map(p => `
+        <div class="ai-plant-card">
+            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=400&q=80'">
+            <div class="ai-plant-info">
+                <h5>${p.name}</h5>
+                <div class="ai-plant-price">₹${p.price} <del>₹${p.oldPrice || Math.round(p.price * 1.25)}</del></div>
+                <div class="ai-plant-actions">
+                    <button class="primary-btn" onclick="addToCart(${p.id})"><i class="fa-solid fa-cart-plus"></i> Add</button>
+                    <button class="view-btn" onclick="viewPlant(${p.id})">Details</button>
+                </div>
+            </div>
+        </div>
+    `).join("");
+
+    return `<div>${titleHtml}${cards}</div>`;
+}
+
+function escapeHtml(str){
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+updateAdminNavState();
+updateCounts();
+renderHomePlants();
+renderPlants();
+renderWishlistPage();
+renderCartPage();
+renderCheckoutSummary();
+</script>
+</body>
+</html>
